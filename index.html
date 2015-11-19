@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="//samdutton.com">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta id="theme-color" name="theme-color" content="#fff">
+
+<base target="_blank">
+
+<title>MediaStream Recording</title>
+
+<link rel="stylesheet" href="css/main.css" />
+
+<style>
+a#downloadLink {
+  display: block;
+  margin: 0 0 1em 0;
+  min-height: 1.2em;
+}
+p#data {
+  min-height: 6em;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="container">
+<div style = "text-align:center;"><h2>This demo requires Firefox 41 and up or Chrome 47 and up. </h2></div>	
+
+  <video controls autoplay></video>
+
+  <input type="button" name = "Record" value= "Record" onclick="onBtnRecordClicked()"/>
+  <input type="button" name = "Stop" value= "Stop"  onclick="onBtnStopClicked()"/>
+  
+  <a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
+
+  <p id="data"></p>
+
+  <script src="js/main.js"></script>
+
+</div>
+
+
+
+</body>
+</html>
