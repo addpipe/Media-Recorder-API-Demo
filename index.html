@@ -29,7 +29,7 @@ p#data {
 <body>
 
 <div id="container">
-<div style = "text-align:center;"><h2>This demo requires Firefox 41 and up or Chrome 47 and up. </h2></div>	
+<div style = "text-align:center;"><h2>Media Recorder API Demo </h2></div>	
 
   <video controls autoplay></video>
 
@@ -37,10 +37,11 @@ p#data {
   <input type="button" name = "Stop" value= "Stop"  onclick="onBtnStopClicked()"/>
   
   <a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
-
   <p id="data"></p>
-
   <script src="js/main.js"></script>
+  <p>Works on:<ul><li>Firefox 41</li><li>Chrome 47 (enable <em>experimental Web Platform features</em> at  chrome://flags)</li></ul></p>
+  <p><span style="color:red">Issues:</span><ul><li>Videos longer than several seconds won't play on Firefox (<code>Video can't be played because the file is corrupt</code>)</li><li>Chrome  records no sound</li></ul></p>
+  <p>Links:<ul><li>GitLab: <a href="https://github.com/nusofthq/Media-Recorder-API-Demo">https://github.com/nusofthq/Media-Recorder-API-Demo</a></li></ul></p>
 
 </div>
 
