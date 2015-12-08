@@ -37,8 +37,9 @@ function startRecording(stream) {
   videoElement.play();
   
   mediaRecorder.ondataavailable = function(e) {
-    //log('Data available...');
+    log('Data available...');
     //console.log(e.data);
+    //console.log(e.data.type);
     //console.log(e);
     	     
     chunks.push(e.data);
@@ -78,7 +79,6 @@ function startRecording(stream) {
   mediaRecorder.onwarning = function(e){
     log('Warning: ' + e);
   };
-
 }
 
   function onBtnRecordClicked (){
