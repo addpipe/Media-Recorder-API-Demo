@@ -29,7 +29,7 @@ p#data {
 <body>
 
 <div id="container">
-<div style = "text-align:center;"><h2>Media Recorder API Demo </h2></div>	
+<div style = "text-align:center;"><h2>HTML5 Media Recorder API Demo </h2><p>Record a 320x240 video</p></div>	
 
   <video controls autoplay></video>
 
@@ -39,9 +39,12 @@ p#data {
   <a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
   <p id="data"></p>
   <script src="js/main.js"></script>
-  <p>Works on:<ul><li>Firefox 41</li><li>Chrome 47 (enable <em>experimental Web Platform features</em> at  chrome://flags)</li></ul></p>
-  <p><span style="color:red">Issues:</span><ul><li>Videos longer than several seconds won't play on Firefox (<code>Video can't be played because the file is corrupt</code>)</li><li>Chrome  records no sound</li></ul></p>
-  <p>Links:<ul><li>GitLab: <a href="https://github.com/nusofthq/Media-Recorder-API-Demo">https://github.com/nusofthq/Media-Recorder-API-Demo</a></li></ul></p>
+  <p>Works on:<ul><li>Firefox 41</li><li>Chrome 47 (enable <em>experimental Web Platform features</em> at  <a href="chrome://flags/#enable-experimental-web-platform-features">chrome://flags</a>)</li></ul></p>
+  <p><span style="color:red">Issues:</span><ul><li>Videos longer than several seconds won't (immediately) play on Firefox (Error shown: <code>Video can't be played because the file is corrupt</code>)</li><li>Chrome  records no sound</li></ul></p>
+  <p>Links:<ul>
+  <li>GitLab: <a target="_blank" href="https://github.com/nusofthq/Media-Recorder-API-Demo">https://github.com/nusofthq/Media-Recorder-API-Demo</a></li>
+  <li>W3C Draft: <a target="_blank"  href="http://w3c.github.io/mediacapture-record/MediaRecorder.html">http://w3c.github.io/mediacapture-record/MediaRecorder.html</a></li>
+  </ul></p>
 
 </div>
 
