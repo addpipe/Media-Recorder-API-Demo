@@ -83,7 +83,7 @@ function startRecording(stream) {
 
   function onBtnRecordClicked (){
 	 if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-	    alert('Sorry! This demo requires Firefox 41 or Chrome 47 and up.');
+	    alert('Your browser doesn\'t support MediaRecorder. Try Firefox 41 or Chrome 47.');
 	  }else {
 	    navigator.getUserMedia(constraints, startRecording, errorCallback);
 	  }
