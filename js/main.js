@@ -110,7 +110,7 @@ function handleSourceOpen(event) {
 
   function onBtnRecordClicked (){
 	 if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-	    alert('Sorry! This demo requires Firefox 41 or Chrome 47 and up.');
+	    alert('MediaRecorder not supported on your browser, use Firefox 41 or Chrome 47 instead.');
 	  }else {
 	    navigator.getUserMedia(constraints, startRecording, errorCallback);
 	    recBtn.disabled = true;
