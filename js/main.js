@@ -13,14 +13,24 @@ if(getBrowser() == "Chrome"){
 		var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 1280 },  height: { min: 240, ideal: 240, max: 720 }}}; //Firefox
 }	
 
+var recBtn = document.querySelector('button#rec');
+var pauseResBtn = document.querySelector('button#pauseRes');
+var stopBtn = document.querySelector('button#stop');
+
 var videoElement = document.querySelector('video');
 var dataElement = document.querySelector('#data');
 var downloadLink = document.querySelector('a#downloadLink');
 
+videoElement.controls = false;
 
 function errorCallback(error){
   console.log('navigator.getUserMedia error: ', error);
 }
+
+var mediaSource = new MediaSource();
+mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
+var sourceBuffer;
+
 
 var mediaRecorder;
 var chunks = [];
@@ -30,20 +40,23 @@ function startRecording(stream) {
   log('Starting...');
   mediaRecorder = new MediaRecorder(stream);
   
-  mediaRecorder.start();
+  pauseResBtn.textContent = "Pause";
   
+  mediaRecorder.start(10);
+   
   var url = window.URL || window.webkitURL;
   videoElement.src = url ? url.createObjectURL(stream) : stream;
   videoElement.play();
   
   mediaRecorder.ondataavailable = function(e) {
-    log('Data available...');
+    //log('Data available...');
     //console.log(e.data);
     //console.log(e.data.type);
     //console.log(e);
-    	     
-    chunks.push(e.data);
+        
+	chunks.push(e.data);
     
+     
   };
 
   mediaRecorder.onerror = function(e){
@@ -75,22 +88,69 @@ function startRecording(stream) {
     downloadLink.setAttribute( "name", name);
     
   };
+  
+  mediaRecorder.onpause = function(){
+	  log('Paused & state = ' + mediaRecorder.state);
+  }
+  
+  mediaRecorder.onresume = function(){
+	  log('Resumed  & state = ' + mediaRecorder.state);
+  }
 
   mediaRecorder.onwarning = function(e){
     log('Warning: ' + e);
   };
 }
 
+function handleSourceOpen(event) {
+  console.log('MediaSource opened');
+  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
+  console.log('Source buffer: ', sourceBuffer);
+}
+
   function onBtnRecordClicked (){
 	 if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-	    alert('Your browser doesn\'t support MediaRecorder. Try Firefox 41 or Chrome 47.');
+	    alert('Sorry! This demo requires Firefox 41 or Chrome 47 and up.');
 	  }else {
 	    navigator.getUserMedia(constraints, startRecording, errorCallback);
+	    recBtn.disabled = true;
+	    pauseResBtn.disabled = false;
+	    stopBtn.disabled = false;
 	  }
   }
   
   function onBtnStopClicked(){
-	  mediaRecorder.stop();  
+	mediaRecorder.stop(); 
+	videoElement.controls = true;
+	
+	recBtn.disabled = false;
+	pauseResBtn.disabled = true;
+	stopBtn.disabled = true;	
+  }
+  
+  function onPauseResumeClicked(){
+	 
+	if(pauseResBtn.textContent === "Pause"){
+		
+		console.log("pause");
+		
+		pauseResBtn.textContent = "Resume";
+		mediaRecorder.pause(); 
+		
+		stopBtn.disabled = true;
+		
+	}else{
+		console.log("resume");
+		
+		pauseResBtn.textContent = "Pause";
+		mediaRecorder.resume();
+		
+		stopBtn.disabled = false;
+	}
+	 
+	recBtn.disabled = true;
+	pauseResBtn.disabled = false;
+	  
   }
 
 
@@ -99,6 +159,8 @@ function log(message){
 }
 
 
+
+//browser ID
 function getBrowser(){
 	
 	var nVer = navigator.appVersion;
