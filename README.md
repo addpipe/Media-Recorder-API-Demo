@@ -4,3 +4,5 @@ An demo implementation of the new Media Recorder API (formerly known as MediaStr
 Demo: https://addpipe.com/media-recorder-api-demo/
 
 W3C editor's draft: http://w3c.github.io/mediacapture-record/MediaRecorder.html 
+
+MediaRecorder article: https://addpipe.com/blog/mediarecorder-api/
