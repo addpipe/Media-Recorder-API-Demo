@@ -8,9 +8,9 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 
 
 if(getBrowser() == "Chrome"){
-	var constraints = {"audio": false, "video": {  "mandatory": {  "minWidth": 320,  "maxWidth": 320, "minHeight": 240,"maxHeight": 240 }, "optional": [] } };//Chrome
+	var constraints = {"audio": true, "video": {  "mandatory": {  "minWidth": 320,  "maxWidth": 320, "minHeight": 240,"maxHeight": 240 }, "optional": [] } };//Chrome
 }else if(getBrowser() == "Firefox"){
-		var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 1280 },  height: { min: 240, ideal: 240, max: 720 }}}; //Firefox
+	var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 1280 },  height: { min: 240, ideal: 240, max: 720 }}}; //Firefox
 }	
 
 var recBtn = document.querySelector('button#rec');
@@ -155,7 +155,7 @@ function handleSourceOpen(event) {
 
 
 function log(message){
-  dataElement.innerHTML = message + '<br>' + dataElement.innerHTML ;
+  dataElement.innerHTML =  dataElement.innerHTML + <br> + message ;
 }
 
 
