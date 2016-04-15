@@ -27,10 +27,11 @@ function errorCallback(error){
   console.log('navigator.getUserMedia error: ', error);
 }
 
+/*
 var mediaSource = new MediaSource();
 mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
 var sourceBuffer;
-
+*/
 
 var mediaRecorder;
 var chunks = [];
