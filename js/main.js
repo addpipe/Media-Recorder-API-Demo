@@ -38,8 +38,27 @@ var chunks = [];
 var count = 0;
 
 function startRecording(stream) {
-  log('Starting...');
-  mediaRecorder = new MediaRecorder(stream);
+  log('Start recording...');
+	if (typeof MediaRecorder.isTypeSupported == 'function')
+	{
+		/*
+			MediaRecorder.isTypeSupported is a Chrome 49 function announced in https://developers.google.com/web/updates/2016/01/mediarecorder but it's not present in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
+		*/
+		if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+  	  var options = {mimeType: 'video/webm;codecs=vp9'};
+  	} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+  	  var options = {mimeType: 'video/webm;codecs=vp8'};
+  	}
+  	log('Using '+options.mimeType);
+		mediaRecorder = new MediaRecorder(stream, options);
+	}else{
+		log('Using default codecs for browser');
+		mediaRecorder = new MediaRecorder(stream);
+	}
+
+
+
+
 
   pauseResBtn.textContent = "Pause";
 
@@ -103,15 +122,15 @@ function startRecording(stream) {
   };
 }
 
-function handleSourceOpen(event) {
-  console.log('MediaSource opened');
-  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
-  console.log('Source buffer: ', sourceBuffer);
-}
+//function handleSourceOpen(event) {
+//  console.log('MediaSource opened');
+//  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp9"');
+//  console.log('Source buffer: ', sourceBuffer);
+//}
 
-  function onBtnRecordClicked (){
+function onBtnRecordClicked (){
 	 if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-	    alert('MediaRecorder not supported on your browser, use Firefox 41 or Chrome 47 instead.');
+	    alert('MediaRecorder not supported on your browser, use Firefox 30 or Chrome 49 instead.');
 	  }else {
 	    navigator.getUserMedia(constraints, startRecording, errorCallback);
 	    recBtn.disabled = true;
@@ -127,9 +146,9 @@ function handleSourceOpen(event) {
 	recBtn.disabled = false;
 	pauseResBtn.disabled = true;
 	stopBtn.disabled = true;
-  }
+}
 
-  function onPauseResumeClicked(){
+function onPauseResumeClicked(){
 
 	if(pauseResBtn.textContent === "Pause"){
 
@@ -152,7 +171,7 @@ function handleSourceOpen(event) {
 	recBtn.disabled = true;
 	pauseResBtn.disabled = false;
 
-  }
+}
 
 
 function log(message){
