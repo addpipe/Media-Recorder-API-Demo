@@ -19,6 +19,6 @@ Links:
 
 * [Article: HTML5’s Media Recorder API in Action on Chrome and Firefox](https://addpipe.com/blog/mediarecorder-api/)
 
-* [W3C Draft(s)](http://w3c.github.io/mediacapture-record/MediaRecorder.html)
+* [W3C Draft (Latest published version)](https://www.w3.org/TR/mediastream-recording/)
 
 * [Media Recorder API at 65% penetration thanks to Chrome](https://addpipe.com/blog/media-recorder-api-is-now-supported-by-65-of-all-desktop-internet-users/)
