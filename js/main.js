@@ -8,9 +8,9 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 
 
 if(getBrowser() == "Chrome"){
-	var constraints = {"audio": true, "video": {  "mandatory": {  "minWidth": 320,  "maxWidth": 320, "minHeight": 240,"maxHeight": 240 }, "optional": [] } };//Chrome
+	var constraints = {"audio": true, "video": {  "mandatory": {  "minWidth": 640,  "maxWidth": 640, "minHeight": 480,"maxHeight": 480 }, "optional": [] } };//Chrome
 }else if(getBrowser() == "Firefox"){
-	var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 1280 },  height: { min: 240, ideal: 240, max: 720 }}}; //Firefox
+	var constraints = {audio: true,video: {  width: { min: 640, ideal: 640, max: 640 },  height: { min: 480, ideal: 480, max: 480 }}}; //Firefox
 }
 
 var recBtn = document.querySelector('button#rec');
@@ -24,7 +24,7 @@ var downloadLink = document.querySelector('a#downloadLink');
 videoElement.controls = false;
 
 function errorCallback(error){
-	console.log('navigator.getUserMedia error: ', error);
+	console.log('navigator.getUserMedia error: ', error);	
 }
 
 /*
@@ -43,7 +43,11 @@ function startRecording(stream) {
 		/*
 			MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
 		*/
-		if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+		if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
+		  var options = {mimeType: 'video/webm;codecs=h264'};
+		} else if (MediaRecorder.isTypeSupported('video/x-matroska;codecs=h.264')) {
+		  var options = {mimeType: 'video/x-matroska;codecs=h.264'};
+		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
 		  var options = {mimeType: 'video/webm;codecs=vp9'};
 		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
 		  var options = {mimeType: 'video/webm;codecs=vp8'};
