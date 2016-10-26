@@ -45,8 +45,6 @@ function startRecording(stream) {
 		*/
 		if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
 		  var options = {mimeType: 'video/webm;codecs=h264'};
-		} else if (MediaRecorder.isTypeSupported('video/x-matroska;codecs=h.264')) {
-		  var options = {mimeType: 'video/x-matroska;codecs=h.264'};
 		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
 		  var options = {mimeType: 'video/webm;codecs=vp9'};
 		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
