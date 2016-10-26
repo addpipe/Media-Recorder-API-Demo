@@ -2,7 +2,7 @@
 A demo implementation of the (new) [Media Recorder API](http://w3c.github.io/mediacapture-record/MediaRecorder.html) (also known as MediaStream Recording API).
 
 Works on:
-* Firefox 30 and up
+* Firefox 30+
 * Chrome 47,48 (video only, enable experimental Web Platform features at chrome://flags)
 * Chrome 49+
 
