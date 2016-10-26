@@ -7,6 +7,7 @@ Works on:
 * Chrome 49+
 
 Containers & codecs:
+* Chrome 52+ : webm, VP8/VP9/H.264, Opus @ 48kHz
 * Chrome 49+ : webm, VP8/VP9, Opus @ 48kHz
 * Firefox 30+: webm,VP8, Vorbis @ 44.1 kHz
 
