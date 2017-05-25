@@ -43,11 +43,11 @@ function startRecording(stream) {
 		/*
 			MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
 		*/
-		if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-		  var options = {mimeType: 'video/webm;codecs=h264'};
-		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+		if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
 		  var options = {mimeType: 'video/webm;codecs=vp9'};
-		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
+		  var options = {mimeType: 'video/webm;codecs=h264'};
+		} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
 		  var options = {mimeType: 'video/webm;codecs=vp8'};
 		}
 		log('Using '+options.mimeType);
