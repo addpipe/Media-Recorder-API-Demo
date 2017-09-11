@@ -53,7 +53,7 @@ function startRecording(stream) {
 		log('Using '+options.mimeType);
 		mediaRecorder = new MediaRecorder(stream, options);
 	}else{
-		log('Using default codecs for browser');
+		log('isTypeSupported is not supported, using default codecs for browser');
 		mediaRecorder = new MediaRecorder(stream);
 	}
 
