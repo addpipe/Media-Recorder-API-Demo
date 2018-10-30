@@ -1,13 +1,9 @@
 'use strict';
 
 /* globals MediaRecorder */
-
 // Spec is at http://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 640 },  height: { min: 240, ideal: 240, max: 480 }}}; //Firefox
-
+var constraints = {audio: true,video: {  width: { min: 320, ideal: 320, max: 640 },  height: { min: 240, ideal: 240, max: 480 }}};
 
 var recBtn = document.querySelector('button#rec');
 var pauseResBtn = document.querySelector('button#pauseRes');
