@@ -19,110 +19,104 @@ var downloadLink = document.querySelector('a#downloadLink');
 
 videoElement.controls = false;
 
-function errorCallback(error){
-	console.log('navigator.getUserMedia error: ', error);	
-}
-
 var mediaRecorder;
 var chunks = [];
 var count = 0;
 
-function startRecording(stream) {
-	log('Start recording...');
-	if (typeof MediaRecorder.isTypeSupported == 'function'){
-		/*
-			MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
-		*/
-		if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-		  var options = {mimeType: 'video/webm;codecs=vp9'};
-		} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-		  var options = {mimeType: 'video/webm;codecs=h264'};
-		} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
-		  var options = {mimeType: 'video/webm;codecs=vp8'};
-		}
-		log('Using '+options.mimeType);
-		mediaRecorder = new MediaRecorder(stream, options);
-	}else{
-		log('isTypeSupported is not supported, using default codecs for browser');
-		mediaRecorder = new MediaRecorder(stream);
-	}
-
-	pauseResBtn.textContent = "Pause";
-
-	mediaRecorder.start(10);
-
-	videoElement.srcObject = stream;
-	videoElement.play();
-
-	stream.getTracks().forEach(function(track) {
-    	log(track.kind+":"+JSON.stringify(track.getSettings()));
-		console.log(track.getSettings());
-	})
-
-	mediaRecorder.ondataavailable = function(e) {
-		//log('Data available...');
-		//console.log(e.data);
-		//console.log(e.data.type);
-		//console.log(e);
-		chunks.push(e.data);
-	};
-
-	mediaRecorder.onerror = function(e){
-		log('Error: ' + e);
-		console.log('Error: ', e);
-	};
-
-
-	mediaRecorder.onstart = function(){
-		log('Started & state = ' + mediaRecorder.state);
-	};
-
-	mediaRecorder.onstop = function(){
-		log('Stopped  & state = ' + mediaRecorder.state);
-
-		var blob = new Blob(chunks, {type: "video/webm"});
-		chunks = [];
-
-		var videoURL = window.URL.createObjectURL(blob);
-
-		downloadLink.href = videoURL;
-		videoElement.src = videoURL;
-		downloadLink.innerHTML = 'Download video file';
-
-		var rand =  Math.floor((Math.random() * 10000000));
-		var name  = "video_"+rand+".webm" ;
-
-		downloadLink.setAttribute( "download", name);
-		downloadLink.setAttribute( "name", name);
-	};
-
-	mediaRecorder.onpause = function(){
-		log('Paused & state = ' + mediaRecorder.state);
-	}
-
-	mediaRecorder.onresume = function(){
-		log('Resumed  & state = ' + mediaRecorder.state);
-	}
-
-	mediaRecorder.onwarning = function(e){
-		log('Warning: ' + e);
-	};
-}
-
-//function handleSourceOpen(event) {
-//  console.log('MediaSource opened');
-//  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp9"');
-//  console.log('Source buffer: ', sourceBuffer);
-//}
 
 function onBtnRecordClicked (){
-	 if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-		alert('MediaRecorder not supported on your browser, use Firefox 30 or Chrome 49 instead.');
+	if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
+		alert('MediaRecorder not supported on your browser, use Firefox or Chrome instead.');
 	}else {
-		navigator.getUserMedia(constraints, startRecording, errorCallback);
 		recBtn.disabled = true;
 		pauseResBtn.disabled = false;
 		stopBtn.disabled = false;
+
+		navigator.mediaDevices.getUserMedia(constraints)
+		.then(function(stream) {
+			/* use the stream */
+			log('Start recording...');
+			if (typeof MediaRecorder.isTypeSupported == 'function'){
+				/*
+					MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
+				*/
+				if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+				  var options = {mimeType: 'video/webm;codecs=vp9'};
+				} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
+				  var options = {mimeType: 'video/webm;codecs=h264'};
+				} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+				  var options = {mimeType: 'video/webm;codecs=vp8'};
+				}
+				log('Using '+options.mimeType);
+				mediaRecorder = new MediaRecorder(stream, options);
+			}else{
+				log('isTypeSupported is not supported, using default codecs for browser');
+				mediaRecorder = new MediaRecorder(stream);
+			}
+
+			pauseResBtn.textContent = "Pause";
+
+			mediaRecorder.start(10);
+
+			videoElement.srcObject = stream;
+			videoElement.play();
+
+			stream.getTracks().forEach(function(track) {
+				log(track.kind+":"+JSON.stringify(track.getSettings()));
+				console.log(track.getSettings());
+			})
+
+			mediaRecorder.ondataavailable = function(e) {
+				chunks.push(e.data);
+			};
+
+			mediaRecorder.onerror = function(e){
+				log('Error: ' + e);
+				console.log('Error: ', e);
+			};
+
+
+			mediaRecorder.onstart = function(){
+				log('Started & state = ' + mediaRecorder.state);
+			};
+
+			mediaRecorder.onstop = function(){
+				log('Stopped  & state = ' + mediaRecorder.state);
+
+				var blob = new Blob(chunks, {type: "video/webm"});
+				chunks = [];
+
+				var videoURL = window.URL.createObjectURL(blob);
+
+				downloadLink.href = videoURL;
+				videoElement.src = videoURL;
+				downloadLink.innerHTML = 'Download video file';
+
+				var rand =  Math.floor((Math.random() * 10000000));
+				var name  = "video_"+rand+".webm" ;
+
+				downloadLink.setAttribute( "download", name);
+				downloadLink.setAttribute( "name", name);
+			};
+
+			mediaRecorder.onpause = function(){
+				log('Paused & state = ' + mediaRecorder.state);
+			}
+
+			mediaRecorder.onresume = function(){
+				log('Resumed  & state = ' + mediaRecorder.state);
+			}
+
+			mediaRecorder.onwarning = function(e){
+				log('Warning: ' + e);
+			};
+		})
+		.catch(function(err) {
+			/* handle the error */
+			log('navigator.getUserMedia error: '+err);
+			console.log('navigator.getUserMedia error: ', err);
+
+		});
 	}
 }
 
