@@ -61,8 +61,7 @@ function startRecording(stream) {
 
 	mediaRecorder.start(10);
 
-	var url = window.URL || window.webkitURL;
-	videoElement.src = url ? url.createObjectURL(stream) : stream;
+	videoElement.srcObject = stream;
 	videoElement.play();
 
 	mediaRecorder.ondataavailable = function(e) {
