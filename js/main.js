@@ -64,6 +64,11 @@ function startRecording(stream) {
 	videoElement.srcObject = stream;
 	videoElement.play();
 
+	stream.getTracks().forEach(function(track) {
+    	log(track.kind+":"+JSON.stringify(track.getSettings()));
+		console.log(track.getSettings());
+	})
+
 	mediaRecorder.ondataavailable = function(e) {
 		//log('Data available...');
 		//console.log(e.data);
