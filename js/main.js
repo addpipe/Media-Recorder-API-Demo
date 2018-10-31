@@ -21,8 +21,8 @@ var count = 0;
 
 
 function onBtnRecordClicked (){
-	if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
-		alert('MediaRecorder not supported on your browser, use Firefox or Chrome instead.');
+	if (typeof MediaRecorder === 'undefined' || !navigator.mediaDevices.getUserMedia) {
+		alert('MediaRecorder or navigator.mediaDevices.getUserMedia is NOT supported on your browser, use Firefox or Chrome instead.');
 	}else {
 		recBtn.disabled = true;
 		pauseResBtn.disabled = false;
@@ -109,8 +109,8 @@ function onBtnRecordClicked (){
 		})
 		.catch(function(err) {
 			/* handle the error */
-			log('navigator.getUserMedia error: '+err);
-			console.log('navigator.getUserMedia error: ', err);
+			log('navigator.mediaDevices.getUserMedia error: '+err);
+			console.log('navigator.mediaDevices.getUserMedia error: ', err);
 
 		});
 	}
