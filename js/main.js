@@ -34,12 +34,12 @@ if (!navigator.mediaDevices.getUserMedia){
 				localStream.getTracks().forEach(function(track) {
 					if(track.kind == "audio"){
 						track.onended = function(event){
-							log("audio track.onended");
+							 log("audio track.onended Audio track.readyState="+track.readyState+", track.muted=" + track.muted);
 						}
 					}
 					if(track.kind == "video"){
 						track.onended = function(event){
-							log("video track.onended");
+							log("video track.onended Audio track.readyState="+track.readyState+", track.muted=" + track.muted);
 						}
 					}
 				});
