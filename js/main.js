@@ -179,9 +179,8 @@ function onStateClicked(){
 
 function log(message){
 	dataElement.innerHTML = dataElement.innerHTML+'<br>'+message ;
+	console.log(message)
 }
-
-
 
 //browser ID
 function getBrowser(){
