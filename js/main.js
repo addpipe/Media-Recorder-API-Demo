@@ -174,6 +174,15 @@ function onStateClicked(){
 	log("mediaRecorder.mimeType="+mediaRecorder.mimeType);
 	log("mediaRecorder.videoBitsPerSecond="+mediaRecorder.videoBitsPerSecond);
 	log("mediaRecorder.audioBitsPerSecond="+mediaRecorder.audioBitsPerSecond);
+
+	localStream.getTracks().forEach(function(track) {
+		if(track.kind == "audio"){
+			log("Audio: track.readyState="+track.readyState+", track.muted=" + track.muted);
+		}
+		if(track.kind == "video"){
+			log("Video: track.readyState="+track.readyState+", track.muted=" + track.muted);
+		}
+	});
 	
 }
 
