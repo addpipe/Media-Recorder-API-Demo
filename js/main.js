@@ -69,16 +69,16 @@ function onBtnRecordClicked (){
 		}
 
 		mediaRecorder.ondataavailable = function(e) {
-			log('ondataavailable.data.size='+e.data.size);
+			log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
 			chunks.push(e.data);
 		};
 
 		mediaRecorder.onerror = function(e){
-			log('Error: ' + e);
+			log('mediaRecorder.onerror: ' + e);
 		};
 
 		mediaRecorder.onstart = function(){
-			log('Started, mediaRecorder.state = ' + mediaRecorder.state);
+			log('mediaRecorder.onstart, mediaRecorder.state = ' + mediaRecorder.state);
 			
 			localStream.getTracks().forEach(function(track) {
               if(track.kind == "audio"){
@@ -92,7 +92,7 @@ function onBtnRecordClicked (){
 		};
 
 		mediaRecorder.onstop = function(){
-			log('Stopped  & state = ' + mediaRecorder.state);
+			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
 			var blob = new Blob(chunks, {type: "video/webm"});
 			chunks = [];
@@ -111,15 +111,15 @@ function onBtnRecordClicked (){
 		};
 
 		mediaRecorder.onpause = function(){
-			log('Paused & state = ' + mediaRecorder.state);
+			log('mediaRecorder.onpause, mediaRecorder.state = ' + mediaRecorder.state);
 		}
 
 		mediaRecorder.onresume = function(){
-			log('Resumed  & state = ' + mediaRecorder.state);
+			log('mediaRecorder.onresume, mediaRecorder.state = ' + mediaRecorder.state);
 		}
 
 		mediaRecorder.onwarning = function(e){
-			log('Warning: ' + e);
+			log('mediaRecorder.onwarning: ' + e);
 		};
 
 		pauseResBtn.textContent = "Pause";
