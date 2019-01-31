@@ -18,101 +18,112 @@ videoElement.controls = false;
 var mediaRecorder;
 var chunks = [];
 var count = 0;
+var localStream = null;
 
+if (!navigator.mediaDevices.getUserMedia){
+	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Firefox or Chrome');
+}else{
+	if (window.MediaRecorder == undefined) {
+			alert('MediaRecorder not supported on your browser, use the latest version of Firefox or Chrome');
+	}else{
+		navigator.mediaDevices.getUserMedia(constraints)
+			.then(function(stream) {
+				localStream = stream;
+				
+				videoElement.srcObject = localStream;
+				videoElement.play();
+				
+			}).catch(function(err) {
+				/* handle the error */
+				log('navigator.getUserMedia error: '+err);
+			});
+	}
+}
 
 function onBtnRecordClicked (){
-	if (typeof MediaRecorder === 'undefined' || !navigator.mediaDevices.getUserMedia) {
-		alert('MediaRecorder or navigator.mediaDevices.getUserMedia is NOT supported on your browser, use Firefox or Chrome instead.');
+	if (localStream == null) {
+		alert('Could not get local stream from mic/camera');
 	}else {
 		recBtn.disabled = true;
 		pauseResBtn.disabled = false;
 		stopBtn.disabled = false;
 
-		navigator.mediaDevices.getUserMedia(constraints)
-		.then(function(stream) {
-			/* use the stream */
-			log('Start recording...');
-			if (typeof MediaRecorder.isTypeSupported == 'function'){
-				/*
-					MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
-				*/
-				if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-				  var options = {mimeType: 'video/webm;codecs=vp9'};
-				} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-				  var options = {mimeType: 'video/webm;codecs=h264'};
-				} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
-				  var options = {mimeType: 'video/webm;codecs=vp8'};
-				}
-				log('Using '+options.mimeType);
-				mediaRecorder = new MediaRecorder(stream, options);
-			}else{
-				log('isTypeSupported is not supported, using default codecs for browser');
-				mediaRecorder = new MediaRecorder(stream);
+		/* use the stream */
+		log('Start recording...');
+		if (typeof MediaRecorder.isTypeSupported == 'function'){
+			/*
+				MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
+			*/
+			if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+			  var options = {mimeType: 'video/webm;codecs=vp9'};
+			} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
+			  var options = {mimeType: 'video/webm;codecs=h264'};
+			} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+			  var options = {mimeType: 'video/webm;codecs=vp8'};
 			}
+			log('Using '+options.mimeType);
+			mediaRecorder = new MediaRecorder(stream, options);
+		}else{
+			log('isTypeSupported is not supported, using default codecs for browser');
+			mediaRecorder = new MediaRecorder(stream);
+		}
 
-			pauseResBtn.textContent = "Pause";
+		pauseResBtn.textContent = "Pause";
 
-			mediaRecorder.start(10);
+		mediaRecorder.start(10);
 
-			videoElement.srcObject = stream;
-			videoElement.play();
+		videoElement.srcObject = stream;
+		videoElement.play();
 
-			stream.getTracks().forEach(function(track) {
-				log(track.kind+":"+JSON.stringify(track.getSettings()));
-				console.log(track.getSettings());
-			})
-
-			mediaRecorder.ondataavailable = function(e) {
-				chunks.push(e.data);
-			};
-
-			mediaRecorder.onerror = function(e){
-				log('Error: ' + e);
-				console.log('Error: ', e);
-			};
-
-
-			mediaRecorder.onstart = function(){
-				log('Started & state = ' + mediaRecorder.state);
-			};
-
-			mediaRecorder.onstop = function(){
-				log('Stopped  & state = ' + mediaRecorder.state);
-
-				var blob = new Blob(chunks, {type: "video/webm"});
-				chunks = [];
-
-				var videoURL = window.URL.createObjectURL(blob);
-
-				downloadLink.href = videoURL;
-				videoElement.src = videoURL;
-				downloadLink.innerHTML = 'Download video file';
-
-				var rand =  Math.floor((Math.random() * 10000000));
-				var name  = "video_"+rand+".webm" ;
-
-				downloadLink.setAttribute( "download", name);
-				downloadLink.setAttribute( "name", name);
-			};
-
-			mediaRecorder.onpause = function(){
-				log('Paused & state = ' + mediaRecorder.state);
-			}
-
-			mediaRecorder.onresume = function(){
-				log('Resumed  & state = ' + mediaRecorder.state);
-			}
-
-			mediaRecorder.onwarning = function(e){
-				log('Warning: ' + e);
-			};
+		stream.getTracks().forEach(function(track) {
+			log(track.kind+":"+JSON.stringify(track.getSettings()));
+			console.log(track.getSettings());
 		})
-		.catch(function(err) {
-			/* handle the error */
-			log('navigator.mediaDevices.getUserMedia error: '+err);
-			console.log('navigator.mediaDevices.getUserMedia error: ', err);
 
-		});
+		mediaRecorder.ondataavailable = function(e) {
+			chunks.push(e.data);
+		};
+
+		mediaRecorder.onerror = function(e){
+			log('Error: ' + e);
+			console.log('Error: ', e);
+		};
+
+
+		mediaRecorder.onstart = function(){
+			log('Started & state = ' + mediaRecorder.state);
+		};
+
+		mediaRecorder.onstop = function(){
+			log('Stopped  & state = ' + mediaRecorder.state);
+
+			var blob = new Blob(chunks, {type: "video/webm"});
+			chunks = [];
+
+			var videoURL = window.URL.createObjectURL(blob);
+
+			downloadLink.href = videoURL;
+			videoElement.src = videoURL;
+			downloadLink.innerHTML = 'Download video file';
+
+			var rand =  Math.floor((Math.random() * 10000000));
+			var name  = "video_"+rand+".webm" ;
+
+			downloadLink.setAttribute( "download", name);
+			downloadLink.setAttribute( "name", name);
+		};
+
+		mediaRecorder.onpause = function(){
+			log('Paused & state = ' + mediaRecorder.state);
+		}
+
+		mediaRecorder.onresume = function(){
+			log('Resumed  & state = ' + mediaRecorder.state);
+		}
+
+		mediaRecorder.onwarning = function(e){
+			log('Warning: ' + e);
+		};
 	}
 }
 
