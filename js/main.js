@@ -141,6 +141,13 @@ function onPauseResumeClicked(){
 	pauseResBtn.disabled = false;
 }
 
+function onStateClicked(){
+	log("mediaRecorder.state="+mediaRecorder.state);
+	log("mediaRecorder.mimeType="+mediaRecorder.mimeType);
+	log("mediaRecorder.videoBitsPerSecond="+mediaRecorder.videoBitsPerSecond);
+	log("mediaRecorder.audioBitsPerSecond="+mediaRecorder.audioBitsPerSecond);
+	
+}
 
 function log(message){
 	dataElement.innerHTML = dataElement.innerHTML+'<br>'+message ;
