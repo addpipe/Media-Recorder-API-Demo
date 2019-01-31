@@ -133,10 +133,23 @@ function onBtnRecordClicked (){
 	}
 }
 
+navigator.mediaDevices.ondevicechange = function(event) {
+	log("mediaDevices.ondevicechange");
+
+	if (localStream != null){
+		localStream.getTracks().forEach(function(track) {
+			if(track.kind == "audio"){
+				track.onended = function(event){
+					log("audio track.onended");
+				}
+			}
+		});
+	}
+}
+
 function onBtnStopClicked(){
 	mediaRecorder.stop();
 	videoElement.controls = true;
-
 	recBtn.disabled = false;
 	pauseResBtn.disabled = true;
 	stopBtn.disabled = true;
@@ -144,12 +157,10 @@ function onBtnStopClicked(){
 
 function onPauseResumeClicked(){
 	if(pauseResBtn.textContent === "Pause"){
-		console.log("pause");
 		pauseResBtn.textContent = "Resume";
 		mediaRecorder.pause();
 		stopBtn.disabled = true;
 	}else{
-		console.log("resume");
 		pauseResBtn.textContent = "Pause";
 		mediaRecorder.resume();
 		stopBtn.disabled = false;
