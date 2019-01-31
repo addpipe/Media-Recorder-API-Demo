@@ -19,6 +19,7 @@ var mediaRecorder;
 var chunks = [];
 var count = 0;
 var localStream = null;
+var soundMeter  = null;
 
 if (!navigator.mediaDevices.getUserMedia){
 	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Firefox or Chrome');
@@ -30,8 +31,40 @@ if (!navigator.mediaDevices.getUserMedia){
 			.then(function(stream) {
 				localStream = stream;
 				
+				localStream.getTracks().forEach(function(track) {
+					if(track.kind == "audio"){
+						track.onended = function(event){
+							log("audio track.onended");
+						}
+					}
+					if(track.kind == "video"){
+						track.onended = function(event){
+							log("video track.onended");
+						}
+					}
+				});
+				
 				videoElement.srcObject = localStream;
 				videoElement.play();
+				
+				try {
+					window.AudioContext = window.AudioContext || window.webkitAudioContext;
+					window.audioContext = new AudioContext();
+				  } catch (e) {
+					log('Web Audio API not supported.');
+				  }
+
+				  soundMeter = window.soundMeter = new SoundMeter(window.audioContext);
+				  soundMeter.connectToSource(localStream, function(e) {
+					if (e) {
+						log(e);
+						return;
+					}else{
+					   /*setInterval(function() {
+						  log(Math.round(soundMeter.instant.toFixed(2) * 100));
+					  }, 100);*/
+					}
+				  });
 				
 			}).catch(function(err) {
 				/* handle the error */
@@ -69,7 +102,7 @@ function onBtnRecordClicked (){
 		}
 
 		mediaRecorder.ondataavailable = function(e) {
-			log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
+			//log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
 			chunks.push(e.data);
 		};
 
@@ -126,7 +159,7 @@ function onBtnRecordClicked (){
 
 		mediaRecorder.start(10);
 
-		stream.getTracks().forEach(function(track) {
+		localStream.getTracks().forEach(function(track) {
 			log(track.kind+":"+JSON.stringify(track.getSettings()));
 			console.log(track.getSettings());
 		})
@@ -135,7 +168,7 @@ function onBtnRecordClicked (){
 
 navigator.mediaDevices.ondevicechange = function(event) {
 	log("mediaDevices.ondevicechange");
-
+	/*
 	if (localStream != null){
 		localStream.getTracks().forEach(function(track) {
 			if(track.kind == "audio"){
@@ -145,6 +178,7 @@ navigator.mediaDevices.ondevicechange = function(event) {
 			}
 		});
 	}
+	*/
 }
 
 function onBtnStopClicked(){
@@ -170,19 +204,24 @@ function onPauseResumeClicked(){
 }
 
 function onStateClicked(){
-	log("mediaRecorder.state="+mediaRecorder.state);
-	log("mediaRecorder.mimeType="+mediaRecorder.mimeType);
-	log("mediaRecorder.videoBitsPerSecond="+mediaRecorder.videoBitsPerSecond);
-	log("mediaRecorder.audioBitsPerSecond="+mediaRecorder.audioBitsPerSecond);
+	
+	if(mediaRecorder != null && localStream != null && soundMeter != null){
+		log("mediaRecorder.state="+mediaRecorder.state);
+		log("mediaRecorder.mimeType="+mediaRecorder.mimeType);
+		log("mediaRecorder.videoBitsPerSecond="+mediaRecorder.videoBitsPerSecond);
+		log("mediaRecorder.audioBitsPerSecond="+mediaRecorder.audioBitsPerSecond);
 
-	localStream.getTracks().forEach(function(track) {
-		if(track.kind == "audio"){
-			log("Audio: track.readyState="+track.readyState+", track.muted=" + track.muted);
-		}
-		if(track.kind == "video"){
-			log("Video: track.readyState="+track.readyState+", track.muted=" + track.muted);
-		}
-	});
+		localStream.getTracks().forEach(function(track) {
+			if(track.kind == "audio"){
+				log("Audio: track.readyState="+track.readyState+", track.muted=" + track.muted);
+			}
+			if(track.kind == "video"){
+				log("Video: track.readyState="+track.readyState+", track.muted=" + track.muted);
+			}
+		});
+		
+		log("Audio activity: " + Math.round(soundMeter.instant.toFixed(2) * 100));
+	}
 	
 }
 
@@ -190,6 +229,58 @@ function log(message){
 	dataElement.innerHTML = dataElement.innerHTML+'<br>'+message ;
 	console.log(message)
 }
+
+// Meter class that generates a number correlated to audio volume.
+// The meter class itself displays nothing, but it makes the
+// instantaneous and time-decaying volumes available for inspection.
+// It also reports on the fraction of samples that were at or near
+// the top of the measurement range.
+function SoundMeter(context) {
+  this.context = context;
+  this.instant = 0.0;
+  this.slow = 0.0;
+  this.clip = 0.0;
+  this.script = context.createScriptProcessor(2048, 1, 1);
+  var that = this;
+  this.script.onaudioprocess = function(event) {
+	var input = event.inputBuffer.getChannelData(0);
+	var i;
+	var sum = 0.0;
+	var clipcount = 0;
+	for (i = 0; i < input.length; ++i) {
+	  sum += input[i] * input[i];
+	  if (Math.abs(input[i]) > 0.99) {
+		clipcount += 1;
+	  }
+	}
+	that.instant = Math.sqrt(sum / input.length);
+	that.slow = 0.95 * that.slow + 0.05 * that.instant;
+	that.clip = clipcount / input.length;
+  };
+}
+
+SoundMeter.prototype.connectToSource = function(stream, callback) {
+  console.log('SoundMeter connecting');
+  try {
+	this.mic = this.context.createMediaStreamSource(stream);
+	this.mic.connect(this.script);
+	// necessary to make sample run, but should not be.
+	this.script.connect(this.context.destination);
+	if (typeof callback !== 'undefined') {
+	  callback(null);
+	}
+  } catch (e) {
+	console.error(e);
+	if (typeof callback !== 'undefined') {
+	  callback(e);
+	}
+  }
+};
+SoundMeter.prototype.stop = function() {
+  this.mic.disconnect();
+  this.script.disconnect();
+};
+
 
 //browser ID
 function getBrowser(){
