@@ -68,27 +68,27 @@ function onBtnRecordClicked (){
 			mediaRecorder = new MediaRecorder(localStream);
 		}
 
-		pauseResBtn.textContent = "Pause";
-
-		mediaRecorder.start(10);
-
-		stream.getTracks().forEach(function(track) {
-			log(track.kind+":"+JSON.stringify(track.getSettings()));
-			console.log(track.getSettings());
-		})
-
 		mediaRecorder.ondataavailable = function(e) {
+			log('ondataavailable.data.size='+e.data.size);
 			chunks.push(e.data);
 		};
 
 		mediaRecorder.onerror = function(e){
 			log('Error: ' + e);
-			console.log('Error: ', e);
 		};
 
-
 		mediaRecorder.onstart = function(){
-			log('Started & state = ' + mediaRecorder.state);
+			log('Started, mediaRecorder.state = ' + mediaRecorder.state);
+			
+			localStream.getTracks().forEach(function(track) {
+              if(track.kind == "audio"){
+                log("onstart - Audio track.readyState="+track.readyState+", track.muted=" + track.muted);
+              }
+              if(track.kind == "video"){
+                log("onstart - Video track.readyState="+track.readyState+", track.muted=" + track.muted);
+              }
+            });
+			
 		};
 
 		mediaRecorder.onstop = function(){
@@ -121,6 +121,15 @@ function onBtnRecordClicked (){
 		mediaRecorder.onwarning = function(e){
 			log('Warning: ' + e);
 		};
+
+		pauseResBtn.textContent = "Pause";
+
+		mediaRecorder.start(10);
+
+		stream.getTracks().forEach(function(track) {
+			log(track.kind+":"+JSON.stringify(track.getSettings()));
+			console.log(track.getSettings());
+		})
 	}
 }
 
