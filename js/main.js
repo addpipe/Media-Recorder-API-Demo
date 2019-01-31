@@ -62,18 +62,15 @@ function onBtnRecordClicked (){
 			  var options = {mimeType: 'video/webm;codecs=vp8'};
 			}
 			log('Using '+options.mimeType);
-			mediaRecorder = new MediaRecorder(stream, options);
+			mediaRecorder = new MediaRecorder(localStream, options);
 		}else{
 			log('isTypeSupported is not supported, using default codecs for browser');
-			mediaRecorder = new MediaRecorder(stream);
+			mediaRecorder = new MediaRecorder(localStream);
 		}
 
 		pauseResBtn.textContent = "Pause";
 
 		mediaRecorder.start(10);
-
-		videoElement.srcObject = stream;
-		videoElement.play();
 
 		stream.getTracks().forEach(function(track) {
 			log(track.kind+":"+JSON.stringify(track.getSettings()));
