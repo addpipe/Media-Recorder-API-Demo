@@ -16,7 +16,7 @@ Issues:
 
 
 Links:
-* [Live demo of this code] (https://addpipe.com/media-recorder-api-demo/)
+* [Live demo of this code](https://addpipe.com/media-recorder-api-demo/)
 
 * [Article: HTML5’s Media Recorder API in Action on Chrome and Firefox](https://addpipe.com/blog/mediarecorder-api/)
 
