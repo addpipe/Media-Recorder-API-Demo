@@ -1,10 +1,43 @@
 body {
-  font-family: sans-serif;
-  font-weight: 300;
+	line-height: 1.5;
+	font-family: sans-serif;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	color:black;
+	margin:2em;
+}
+
+h1 {
+	text-decoration: underline red;
+	text-decoration-thickness: 3px;
+	text-underline-offset: 6px;
+	font-size: 220%;
+	font-weight: bold;
+}
+
+h2 {
+	font-weight: bold;
+	color: #005A9C;
+	font-size: 140%;
+	text-transform: uppercase;
+}
+
+p {
+	margin: 1em 0;
+}
+
+pre {
+	padding: 0px;
+	border:0px;
+	border-radius: 0px;
+}
+
+red {
+	color: red;
 }
 
 a {
-  color: #4183C4;
+  color: #4183c4;
   font-weight: 300;
   text-decoration: none;
 }
@@ -14,86 +47,16 @@ a:hover {
   text-decoration: underline;
 }
 
-a.twitter-follow-button {
+a#downloadLink {
   display: block;
-  height: 32px;
-}
-
-a#viewSource {
-  display: block;
-  margin: 1.3em 0 0 0;
-  border-top: 1px solid #999;
-  padding: 1em 0 0 0;
-}
-
-div#links a {
-  display: block;
-  line-height: 1.3em;
-  margin: 0 0 1.5em 0;
-}
-
-@media screen and (min-width: 1000px) {
-  /* hack! to detect non-touch devices */
-  div#links a {
-    line-height: 0.8em;
-  }
-}
-
-h1 a {
-  font-weight: 300;
-  white-space: nowrap;
-}
-
-audio {
-  max-width: 100%;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 1em;
-  word-break: break-word;
-}
-
-canvas {
-  background-color: #ccc;
-  max-width: 100%;
-  width: 100%;
-}
-
-code {
-  font-family: sans-serif;
-  font-weight: 400;
+  margin: 0 0 1em 0;
+  min-height: 1.2em;
 }
 
 div#container {
   margin: 0 auto 0 auto;
-  max-width:720px;
+  max-width: 720px;
   padding: 1em 1.5em 1.3em 1.5em;
-}
-
-div#highlight {
-  border: 1px solid #666;
-  font-size: 1.2em;
-  margin: 0 0 50px 0;
-  padding: 0 1em 0 1em;
-}
-
-div#links {
-  padding: 0.5em 0 0 0;
-}
-
-h1 {
-  font-family: sans-serif;
-  font-weight: 500;
-}
-
-h2 {
-  color: #444;
-  font-size: 1em;
-  font-weight: 500;
-  line-height: 1.2em;
-  margin: 0 0 0.8em 0;
 }
 
 h3 {
@@ -106,142 +69,61 @@ h3 {
   white-space: nowrap;
 }
 
-html {
-/* avoid annoying page width change
-when moving from the home page */
-overflow-y: scroll;
-}
-
-img {
-  border: none;
-  max-width: 100%;
-}
-
-input {
-  font-family: sans-serif;
-}
-
-input[type=radio] {
-  position: relative;
-  top: -1px;
-}
-
-input[type=radio] {
-position: relative;
-top: -1px;
-}
-
-ol {
-  padding: 0 0 0 20px;
-}
-
-p {
-  color: #444;
-  font-weight: 300;
-  line-height: 1.6em;
-}
-
 p#data {
   border-top: 1px dotted #666;
   font-family: Courier New, monospace;
   line-height: 1.3em;
+  min-height: 6em;
   max-height: 1000px;
   overflow-y: auto;
   padding: 1em 0 0 0;
 }
 
-p.borderBelow {
-  border-bottom: 1px solid #eee;
-  padding: 0 0 20px 0;
-}
-
-section p:last-of-type {
-  margin: 0;
-}
-
-section {
-  border-bottom: 1px solid #eee;
-  margin: 0 0 30px 0;
-  padding: 0 0 20px 0;
-}
-
-section:last-of-type {
-  border-bottom: none;
-  padding: 0 0 1em 0;
-}
-
-select {
-  margin: 0 1em 1em 0;
-  position: relative;
-  top: -1px;
-}
-
-h1 span {
-  white-space: nowrap;
-}
-
-strong {
-  font-weight: 500;
-}
-
-ul {
-  padding: 0 0 0 20px;
-}
-
-section p:last-of-type {
-margin: 0;
-}
-
-section {
-  border-bottom: 1px solid #eee;
-  margin: 0 0 30px 0;
-  padding: 0 0 20px 0;
-}
-
-section:last-of-type {
-  border-bottom: none;
-  padding: 0 0 1em 0;
-}
-
-select {
-  margin: 0 1em 1em 0;
-  position: relative;
-  top: -1px;
-}
-
-h1 span {
-  white-space: nowrap;
-}
-
-strong {
-  font-weight: 500;
-}
-
 video {
   background: #222;
-  margin: 10px auto; 
+  margin: 10px auto;
   width: 320px;
-  height:240px;
+  height: 240px;
 }
 
-@media screen and (max-width: 650px) {
-  h1 {
-    font-size: 24px;
-  }
+#controls {
+  display: flex;
+  margin-top: 2rem;
+  max-width: 28em;
 }
 
-@media screen and (max-width: 550px) {
-  button:active {
-    background-color: darkRed;
-  }
-  h1 {
-    font-size: 22px;
-  }
+button {
+  flex-grow: 1;
+  height: 3.5rem;
+  min-width: 2rem;
+  border: none;
+  border-radius: 0.15rem;
+  background: #ed341d;
+  margin-left: 2px;
+  box-shadow: inset 0 -0.15rem 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
-
-@media screen and (max-width: 450px) {
-  h1 {
-    font-size: 20px;
-  }
+button:hover, button:focus {
+  outline: none;
+  background: #c72d1c;
 }
-
+button::-moz-focus-inner {
+  border: 0;
+}
+button:active {
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
+  line-height: 3rem;
+}
+button:disabled {
+  pointer-events: none;
+  background: lightgray;
+}
+button:first-child {
+  margin-left: 0;
+}
