@@ -9,13 +9,11 @@ var recBtn = document.querySelector('button#rec');
 var pauseResBtn = document.querySelector('button#pauseRes');
 var stopBtn = document.querySelector('button#stop');
 
-var videoElement = document.querySelector('video');
 var liveVideoElement = document.querySelector('#live');
 var playbackVideoElement = document.querySelector('#playback');
 var dataElement = document.querySelector('#data');
 var downloadLink = document.querySelector('a#downloadLink');
 
-videoElement.controls = false;
 liveVideoElement.controls = false;
 playbackVideoElement.controls=false;
 
@@ -216,7 +214,6 @@ navigator.mediaDevices.ondevicechange = function(event) {
 
 function onBtnStopClicked(){
 	mediaRecorder.stop();
-	videoElement.controls = true;
 	recBtn.disabled = false;
 	pauseResBtn.disabled = true;
 	stopBtn.disabled = true;
