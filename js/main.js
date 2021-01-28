@@ -20,6 +20,7 @@ var chunks = [];
 var count = 0;
 var localStream = null;
 var soundMeter  = null;
+var containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
 
 if (!navigator.mediaDevices.getUserMedia){
 	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Firefox or Chrome');
@@ -95,6 +96,7 @@ function onBtnRecordClicked (){
 			  var options = {mimeType: 'video/webm;codecs=vp8'};
 			} else  if (MediaRecorder.isTypeSupported('video/mp4;codecs=avc1')) {
 			  //Safari 14.0.2 has an EXPERIMENTAL version of MediaRecorder enabled by default
+			  containerType = "video/mp4";
 			  var options = {mimeType: 'video/mp4;codecs=avc1'};
 			}
 			log('Using '+options.mimeType);
@@ -130,17 +132,24 @@ function onBtnRecordClicked (){
 		mediaRecorder.onstop = function(){
 			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
-			var blob = new Blob(chunks, {type: "video/webm"});
+			var blob = new Blob(chunks, {type: containerType});
 			chunks = [];
 
 			var videoURL = window.URL.createObjectURL(blob);
 
 			downloadLink.href = videoURL;
 			videoElement.src = videoURL;
-			downloadLink.innerHTML = 'Download video file';
 
 			var rand =  Math.floor((Math.random() * 10000000));
-			var name  = "video_"+rand+".webm" ;
+			switch(containerType){
+				case "video/mp4":
+					var name  = "video_"+rand+".mp4" ;
+					break;
+				default:
+					var name  = "video_"+rand+".webm" ;
+			}
+
+			downloadLink.innerHTML = 'Download '+name;
 
 			downloadLink.setAttribute( "download", name);
 			downloadLink.setAttribute( "name", name);
