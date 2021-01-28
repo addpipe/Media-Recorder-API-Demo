@@ -86,6 +86,8 @@ function onBtnRecordClicked (){
 		pauseResBtn.disabled = false;
 		stopBtn.disabled = false;
 
+		chunks = [];
+
 		/* use the stream */
 		log('Start recording...');
 		if (typeof MediaRecorder.isTypeSupported == 'function'){
@@ -136,7 +138,6 @@ function onBtnRecordClicked (){
 		mediaRecorder.onstop = function(){
 			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
-			chunks = [];
 			//var recording = new Blob(chunks, {type: containerType});
 			var recording = new Blob(recordedBlobs, {type: mediaRecorder.mimeType});
 			
