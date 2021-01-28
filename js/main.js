@@ -96,12 +96,12 @@ function onBtnRecordClicked (){
 			  var options = {mimeType: 'video/webm;codecs=vp9'};
 			} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
 			  var options = {mimeType: 'video/webm;codecs=h264'};
-			} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
-			  var options = {mimeType: 'video/webm;codecs=vp8'};
-			} else  if (MediaRecorder.isTypeSupported('video/mp4;codecs=avc1')) {
+			} else  if (MediaRecorder.isTypeSupported('video/webm')) {
+			  var options = {mimeType: 'video/webm'};
+			} else  if (MediaRecorder.isTypeSupported('video/mp4')) {
 			  //Safari 14.0.2 has an EXPERIMENTAL version of MediaRecorder enabled by default
 			  containerType = "video/mp4";
-			  var options = {mimeType: 'video/mp4;codecs=avc1'};
+			  var options = {mimeType: 'video/mp4'};
 			}
 			log('Using '+options.mimeType);
 			mediaRecorder = new MediaRecorder(localStream, options);
