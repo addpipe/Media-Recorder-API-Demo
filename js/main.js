@@ -112,7 +112,9 @@ function onBtnRecordClicked (){
 
 		mediaRecorder.ondataavailable = function(e) {
 			//log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
-			chunks.push(e.data);
+			if (e.data && e.data.size > 0) {
+				chunks.push(e.data);
+			}
 		};
 
 		mediaRecorder.onerror = function(e){
