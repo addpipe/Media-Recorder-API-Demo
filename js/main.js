@@ -10,10 +10,14 @@ var pauseResBtn = document.querySelector('button#pauseRes');
 var stopBtn = document.querySelector('button#stop');
 
 var videoElement = document.querySelector('video');
+var liveVideoElement = document.querySelector('#live');
+var playbackVideoElement = document.querySelector('#playback');
 var dataElement = document.querySelector('#data');
 var downloadLink = document.querySelector('a#downloadLink');
 
 videoElement.controls = false;
+liveVideoElement.controls = false;
+playbackVideoElement.controls=false;
 
 var mediaRecorder;
 var chunks = [];
@@ -45,8 +49,8 @@ if (!navigator.mediaDevices.getUserMedia){
 					}
 				});
 				
-				videoElement.srcObject = localStream;
-				videoElement.play();
+				liveVideoElement.srcObject = localStream;
+				liveVideoElement.play();
 				
 				try {
 					window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -132,13 +136,29 @@ function onBtnRecordClicked (){
 		mediaRecorder.onstop = function(){
 			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
-			var blob = new Blob(chunks, {type: containerType});
 			chunks = [];
+			//var recording = new Blob(chunks, {type: containerType});
+			var recording = new Blob(recordedBlobs, {type: mediaRecorder.mimeType});
+			
 
-			var videoURL = window.URL.createObjectURL(blob);
+			downloadLink.href = URL.createObjectURL(recording);
 
-			downloadLink.href = videoURL;
-			videoElement.src = videoURL;
+			/*if ('srcObject' in playbackVideoElement) {
+			  try {
+			    playbackVideoElement.srcObject = recording;
+			  } catch (err) {
+			    if (err.name != "TypeError") {
+			      throw err;
+			    }*/
+			    // Even if they do, they may only support MediaStream
+			    playbackVideoElement.src = URL.createObjectURL(recording);
+			/*  }
+			} else {
+			  playbackVideoElement.src = URL.createObjectURL(recording);
+			} */
+
+			playbackVideoElement.controls = true;
+			playbackVideoElement.play();
 
 			var rand =  Math.floor((Math.random() * 10000000));
 			switch(containerType){
