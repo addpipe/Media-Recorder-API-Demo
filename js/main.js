@@ -93,6 +93,9 @@ function onBtnRecordClicked (){
 			  var options = {mimeType: 'video/webm;codecs=h264'};
 			} else  if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
 			  var options = {mimeType: 'video/webm;codecs=vp8'};
+			} else  if (MediaRecorder.isTypeSupported('video/mp4;codecs=avc1')) {
+			  //Safari 14.0.2 has an EXPERIMENTAL version of MediaRecorder enabled by default
+			  var options = {mimeType: 'video/mp4;codecs=avc1'};
 			}
 			log('Using '+options.mimeType);
 			mediaRecorder = new MediaRecorder(localStream, options);
