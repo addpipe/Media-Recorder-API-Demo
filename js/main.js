@@ -139,7 +139,7 @@ function onBtnRecordClicked (){
 			log('mediaRecorder.onstop, mediaRecorder.state = ' + mediaRecorder.state);
 
 			//var recording = new Blob(chunks, {type: containerType});
-			var recording = new Blob(recordedBlobs, {type: mediaRecorder.mimeType});
+			var recording = new Blob(chunks, {type: mediaRecorder.mimeType});
 			
 
 			downloadLink.href = URL.createObjectURL(recording);
