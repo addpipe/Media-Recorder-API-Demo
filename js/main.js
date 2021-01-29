@@ -111,7 +111,7 @@ function onBtnRecordClicked (){
 		}
 
 		mediaRecorder.ondataavailable = function(e) {
-			//log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
+			log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
 			if (e.data && e.data.size > 0) {
 				chunks.push(e.data);
 			}
@@ -190,7 +190,7 @@ function onBtnRecordClicked (){
 
 		pauseResBtn.textContent = "Pause";
 
-		mediaRecorder.start(10);
+		mediaRecorder.start();
 
 		localStream.getTracks().forEach(function(track) {
 			log(track.kind+":"+JSON.stringify(track.getSettings()));
