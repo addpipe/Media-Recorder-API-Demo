@@ -144,6 +144,10 @@ function onBtnRecordClicked (){
 
 			downloadLink.href = URL.createObjectURL(recording);
 
+			/* 
+				srcObject code from https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject
+			*/
+
 			/*if ('srcObject' in playbackVideoElement) {
 			  try {
 			    playbackVideoElement.srcObject = recording;
