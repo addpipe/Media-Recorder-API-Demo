@@ -194,7 +194,7 @@ function onBtnRecordClicked (){
 
 		pauseResBtn.textContent = "Pause";
 
-		mediaRecorder.start();
+		mediaRecorder.start(1000);
 
 		localStream.getTracks().forEach(function(track) {
 			log(track.kind+":"+JSON.stringify(track.getSettings()));
