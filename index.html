@@ -15,7 +15,7 @@
 	<p><small>Made by the <a href="https://addpipe.com">Pipe Recording Platform</a></small></p>
 	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a 640x480 video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
 	<div>
-		<video id="live" controls autoplay></video> <video id="playback" controls autoplay></video><br>
+		<video id="live" controls autoplay playsinline></video> <video id="playback" controls autoplay></video><br>
 		<div id="controls">
 			<button id="rec" onclick="onBtnRecordClicked()">Record</button>
 			<button id="pauseRes"   onclick="onPauseResumeClicked()" disabled>Pause</button>
