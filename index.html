@@ -4,18 +4,18 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<base target="_blank">
-	<title>Media Recorder API Demo  - addpipe.com</title>
+	<title>Media Recorder API Demo - addpipe.com</title>
 	<!-- Latest compiled and minified Bootstrap CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
 	<link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
 <div>
 	<h1>Media Recorder API Demo</h1>
 	<p><small>Made by the <a href="https://addpipe.com">Pipe Recording Platform</a></small></p>
-	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a 640x480 video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
+	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a 1280x720 video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
 	<div>
-		<video id="live" controls autoplay playsinline></video> <video id="playback" controls autoplay></video><br>
+		<video id="live" controls autoplay playsinline muted></video> <video id="playback" controls autoplay></video><br>
 		<div id="controls">
 			<button id="rec" onclick="onBtnRecordClicked()">Record</button>
 			<button id="pauseRes"   onclick="onPauseResumeClicked()" disabled>Pause</button>
@@ -25,29 +25,29 @@
 	</div>
 	<a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
 	<p id="data"></p>
-	<script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
+	<script src="js/adapter-latest.js"></script>
 	<script src="js/main.js"></script>
 </div>
 <h2>Works on:</h2>
-<ul><li>Firefox 30 and up</li><li>Chrome 47,48 (video only, enable <em>experimental Web Platform features</em> at  <a href="chrome://flags/#enable-experimental-web-platform-features">chrome://flags</a>)</li><li>Chrome 49+</li><li>Safari 14.0.2+ on macOS</li></ul>
+<ul><li>Firefox 30 and up</li><li>Chrome 47,48 (video only, enable <em>experimental Web Platform features</em> at  <a href="chrome://flags/#enable-experimental-web-platform-features">chrome://flags</a>)</li><li>Chrome 49+</li><li>Safari 14.0.2+ on macOS</li><li>Safari on iOS 14.3+</li></ul>
 <span style="color:red">Issues:</span>
 <ul><li>Pause does not stop audio recording on Chrome 49,50</li></ul>
 <h2>Containers &amp; codecs:</h2>
 <table style="width:100%" class="table table-striped">
 	<thead>
 	<tr>
-		<th>&nbsp;</th><th>Chrome 47 &amp; 48</th><th>Chrome 49+</th><th>Chrome 52+</th><th>Firefox 30+</th><th>Safari 14.0.2+ on macOS</th>
+		<th>&nbsp;</th><th>Chrome 47 &amp; 48</th><th>Chrome 49+</th><th>Chrome 52+</th><th>Firefox 30+</th><th>Safari 14.0.2+ on macOS</th><th>Safari on iOS 14.3+</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<td><strong>Container</strong></td><td>webm</td><td>webm</td><td>webm</td><td>webm</td><td>mp4</td>
+		<td><strong>Container</strong></td><td>webm</td><td>webm</td><td>webm</td><td>webm</td><td>mp4</td><td>mp4</td>
 	</tr>
 	<tr>
-		<td><strong>Video</strong></td><td>VP8</td><td>VP8/VP9</td><td>VP8/VP9/H264</td><td>VP8</td><td>H264</td>
+		<td><strong>Video</strong></td><td>VP8</td><td>VP8/VP9</td><td>VP8/VP9/H264</td><td>VP8</td><td>H264</td><td>H264</td>
 	</tr>
 	<tr>
-		<td><strong>Audio</strong></td><td>none</td><td>Opus @ 48kHz</td><td>Opus @ 48kHz</td><td>Vorbis @ 44.1 kHz</td><td>AAC @ 48kHz</td>
+		<td><strong>Audio</strong></td><td>none</td><td>Opus @ 48kHz</td><td>Opus @ 48kHz</td><td>Vorbis @ 44.1 kHz</td><td>Stereo AAC @ 48kHz</td><td>Stereo AAC @ 44.1kHz or 48kHz</td>
 	</tr>
 	</tbody>
 </table>
