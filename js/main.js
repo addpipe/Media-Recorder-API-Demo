@@ -266,56 +266,109 @@ function log(message){
 	console.log(message)
 }
 
+// Define the AudioWorkletProcessor as a string to be dynamically loaded
+const volumeProcessorCode = `
+class VolumeProcessor extends AudioWorkletProcessor {
+	constructor() {
+		super();
+		this.instant = 0.0;
+		this.slow = 0.0;
+		this.clip = 0.0;
+	}
+
+	process(inputs, outputs, parameters) {
+		const input = inputs[0];
+		if (input.length > 0) {
+			const channelData = input[0];
+			let sum = 0.0;
+			let clipcount = 0;
+
+			for (let i = 0; i < channelData.length; ++i) {
+				sum += channelData[i] * channelData[i];
+				if (Math.abs(channelData[i]) > 0.99) {
+					clipcount += 1;
+				}
+			}
+
+			this.instant = Math.sqrt(sum / channelData.length);
+			this.slow = 0.95 * this.slow + 0.05 * this.instant;
+			this.clip = clipcount / channelData.length;
+
+			this.port.postMessage({
+				instant: this.instant,
+				slow: this.slow,
+				clip: this.clip
+			});
+		}
+
+		return true;
+	}
+}
+
+registerProcessor('volume-processor', VolumeProcessor);
+`;
+
 // Meter class that generates a number correlated to audio volume.
 // The meter class itself displays nothing, but it makes the
 // instantaneous and time-decaying volumes available for inspection.
 // It also reports on the fraction of samples that were at or near
 // the top of the measurement range.
-function SoundMeter(context) {
-  this.context = context;
-  this.instant = 0.0;
-  this.slow = 0.0;
-  this.clip = 0.0;
-  this.script = context.createScriptProcessor(2048, 1, 1);
-  var that = this;
-  this.script.onaudioprocess = function(event) {
-	var input = event.inputBuffer.getChannelData(0);
-	var i;
-	var sum = 0.0;
-	var clipcount = 0;
-	for (i = 0; i < input.length; ++i) {
-	  sum += input[i] * input[i];
-	  if (Math.abs(input[i]) > 0.99) {
-		clipcount += 1;
-	  }
-	}
-	that.instant = Math.sqrt(sum / input.length);
-	that.slow = 0.95 * that.slow + 0.05 * that.instant;
-	that.clip = clipcount / input.length;
-  };
-}
+class SoundMeter {
+	constructor(context) {
+		this.context = context;
+		this.instant = 0.0;
+		this.slow = 0.0;
+		this.clip = 0.0;
 
-SoundMeter.prototype.connectToSource = function(stream, callback) {
-  console.log('SoundMeter connecting');
-  try {
-	this.mic = this.context.createMediaStreamSource(stream);
-	this.mic.connect(this.script);
-	// necessary to make sample run, but should not be.
-	this.script.connect(this.context.destination);
-	if (typeof callback !== 'undefined') {
-	  callback(null);
+		// Create a Blob URL for the AudioWorkletProcessor script
+		// This approach is taken to avoid the need for a separate file for the processor
+		const blob = new Blob([volumeProcessorCode], { type: 'application/javascript' });
+		const url = URL.createObjectURL(blob);
+
+		// Load the processor module into the AudioWorklet
+		this.ready = context.audioWorklet.addModule(url).then(() => {
+			// Create an AudioWorkletNode using the registered processor
+			this.node = new AudioWorkletNode(context, 'volume-processor');
+			// Set up a message event listener to receive volume metrics from the processor
+			this.node.port.onmessage = (event) => {
+				this.instant = event.data.instant;
+				this.slow = event.data.slow;
+				this.clip = event.data.clip;
+			};
+		});
 	}
-  } catch (e) {
-	console.error(e);
-	if (typeof callback !== 'undefined') {
-	  callback(e);
+
+	async connectToSource(stream, callback) {
+		console.log("pipe-log at " + new Date().toISOString() + " SoundMeter connecting");
+		try {
+			// Wait for the processor module to be ready
+			await this.ready;
+			// Create a MediaStreamSource from the provided audio stream
+			this.mic = this.context.createMediaStreamSource(stream);
+			// Connect the media source to the AudioWorkletNode
+			this.mic.connect(this.node);
+			// Connect the node to the destination to ensure it works (even though we don't need the output)
+			this.node.connect(this.context.destination);
+			// If a callback is provided, call it with no error
+			if (typeof callback !== 'undefined') {
+				callback(null);
+			}
+		} catch (e) {
+			// Log any errors that occur during the connection process
+			console.log("pipe-log at " + timeStamp() + " error occurred in SoundMeter:", e);
+			// If a callback is provided, call it with the error
+			if (typeof callback !== 'undefined') {
+				callback(e);
+			}
+		}
 	}
-  }
-};
-SoundMeter.prototype.stop = function() {
-  this.mic.disconnect();
-  this.script.disconnect();
-};
+
+	stop() {
+		// Disconnect the media source and the AudioWorkletNode to stop processing
+		this.mic.disconnect();
+		this.node.disconnect();
+	}
+}
 
 
 //browser ID
