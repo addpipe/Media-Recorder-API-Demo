@@ -25,10 +25,10 @@ var soundMeter  = null;
 var containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
 
 if (!navigator.mediaDevices.getUserMedia){
-	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Firefox or Chrome');
+	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Safari, Edge, Firefox or Chrome');
 }else{
 	if (window.MediaRecorder == undefined) {
-			alert('MediaRecorder not supported on your browser, use the latest version of Firefox or Chrome');
+			alert('MediaRecorder not supported on your browser, use the latest version of Safari, Edge, Firefox or Chrome');
 	}else{
 		navigator.mediaDevices.getUserMedia(constraints)
 			.then(function(stream) {
