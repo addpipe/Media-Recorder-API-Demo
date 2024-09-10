@@ -111,7 +111,7 @@ function onBtnRecordClicked (){
 		}
 
 		mediaRecorder.ondataavailable = function(e) {
-			log('mediaRecorder.ondataavailable, e.data.size='+e.data.size);
+			log('mediaRecorder.ondataavailable, e.data.size='+e.data.size+', e.timecode='+e.timecode);
 			if (e.data && e.data.size > 0) {
 				chunks.push(e.data);
 			}
