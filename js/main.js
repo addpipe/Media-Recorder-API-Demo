@@ -37,12 +37,12 @@ if (!navigator.mediaDevices.getUserMedia){
 				localStream.getTracks().forEach(function(track) {
 					if(track.kind == "audio"){
 						track.onended = function(event){
-							 log("audio track.onended Audio track.readyState="+track.readyState+", track.muted=" + track.muted);
+							 log("audio track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
 						}
 					}
 					if(track.kind == "video"){
 						track.onended = function(event){
-							log("video track.onended Audio track.readyState="+track.readyState+", track.muted=" + track.muted);
+							log("video track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
 						}
 					}
 				});
