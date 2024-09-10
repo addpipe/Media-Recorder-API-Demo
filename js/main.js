@@ -3,7 +3,7 @@
 /* globals MediaRecorder */
 // Spec is at http://dvcs.w3.org/hg/dap/raw-file/tip/media-stream-capture/RecordingProposal.html
 
-var constraints = {audio:true,video:{width:{min:640,ideal:640,max:640 },height:{ min:480,ideal:480,max:480},framerate:60}};
+var constraints = {audio:true,video:{width:{min:640,ideal:1280,max:1280 },height:{ min:480,ideal:720,max:720},framerate:60}};
 
 var recBtn = document.querySelector('button#rec');
 var pauseResBtn = document.querySelector('button#pauseRes');
