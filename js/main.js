@@ -262,7 +262,7 @@ function onStateClicked(){
 }
 
 function log(message){
-	dataElement.innerHTML = dataElement.innerHTML+'<br>'+message ;
+	dataElement.innerHTML = dataElement.innerHTML+ '<br>' + new Date().toISOString() + " " + message;
 	console.log(message)
 }
 
