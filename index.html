@@ -32,24 +32,76 @@
 <span style="color:red">Issues:</span>
 <ul><li>Pause does not stop audio recording on Chrome 49,50</li></ul>
 <h2>Containers &amp; codecs:</h2>
-<table style="width:100%" class="table table-striped">
-	<thead>
-	<tr>
-		<th>&nbsp;</th><th>Chrome 47 &amp; 48</th><th>Chrome 49+</th><th>Chrome 52+</th><th>Firefox 30+</th><th>Safari 14.0.2+ on macOS</th><th>Safari on iOS 14.3+</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-		<td><strong>Container</strong></td><td>webm</td><td>webm</td><td>webm</td><td>webm</td><td>mp4</td><td>mp4</td>
-	</tr>
-	<tr>
-		<td><strong>Video</strong></td><td>VP8</td><td>VP8/VP9</td><td>VP8/VP9/H264</td><td>VP8</td><td>H264</td><td>H264</td>
-	</tr>
-	<tr>
-		<td><strong>Audio</strong></td><td>none</td><td>Opus @ 48kHz</td><td>Opus @ 48kHz</td><td>Vorbis @ 44.1 kHz</td><td>Stereo AAC @ 48kHz</td><td>Stereo AAC @ 44.1kHz or 48kHz</td>
-	</tr>
-	</tbody>
-</table>
+<h3>Chrome</h3>
+<ul>
+	<li><b>47+</b></li>
+	<ul>
+		<li>Container: webm</li>
+		<li>Video: VP8</li>
+		<li>Audio: none</li>
+	</ul>
+	<li><b>49+</b></li>
+	<ul>
+		<li>Container: webm</li>
+		<li>Video: VP8, VP9</li>
+		<li>Audio: Opus @ 48kHz</li>
+	</ul>
+	<li><b>52+</b></li>
+	<ul>
+		<li>Container: webm</li>
+		<li>Video: VP8, VP9, H264</li>
+		<li>Audio: Opus @ 48kHz</li>
+	</ul>
+	<li><b>126+</b></li>
+	<ul>
+		<li>Container: webm, mp4</li>
+		<li>Video: VP8, VP9, H264, AV1</li>
+		<li>Audio: Opus @ 48kHz</li>
+	</ul>
+	<li><b>136+</b></li>
+	<ul>
+		<li>Container: webm, mp4</li>
+		<li>Video: VP8, VP9, H264, AV1, HEVC*</li>
+		<li>Audio: Opus @ 48kHz</li>
+	</ul>
+</ul>
+<p><i>* HEVC encoding is only supported if the user's device and operating system provide the necessary capabilities.</i> <a href="https://developer.chrome.com/release-notes/136#h26x_codec_support_updates_for_mediarecorder" target="_blank" rel="noopener noreferrer">(Source)</a></p>
+
+<h3>Firefox</h3>
+<ul>
+	<li><b>30+</b></li>
+	<ul>
+		<li>Container: webm</li>
+		<li>Video: VP8</li>
+		<li>Vorbis/Opus @ 44.1 kHz</li>
+	</ul>
+</ul>
+
+<h3>Safari on macOS</h3>
+<ul>
+	<li><b>14.0.2+</b></li>
+	<ul>
+		<li>Container: mp4</li>
+		<li>Video: H264</li>
+		<li>Stereo AAC @ 48kHz</li>
+	</ul>
+	<li><b>18.4+</b></li>
+	<ul>
+		<li>Container: mp4, webm</li>
+		<li>Video: H264, HEVC, AV1</li>
+		<li>Stereo AAC @ 48kHz</li>
+	</ul>
+</ul>
+
+<h3>Safari on iOS</h3>
+<ul>
+	<li><b>14.3+</b></li>
+	<ul>
+		<li>Container: mp4</li>
+		<li>Video: H264</li>
+		<li>Stereo AAC @ 44.1kHz or 48kHz</li>
+	</ul>
+</ul>
 <h2>Links:</h2>
 <ul>
 	<li>Article associated with this demo: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a></li>
