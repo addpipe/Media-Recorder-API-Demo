@@ -92,19 +92,86 @@ function onBtnRecordClicked (){
 			/*
 				MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
 			*/
-			if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-			  var options = {mimeType: 'video/webm;codecs=vp9'};
-			} else if (MediaRecorder.isTypeSupported('video/webm;codecs=h264')) {
-			  var options = {mimeType: 'video/webm;codecs=h264'};
-			} else  if (MediaRecorder.isTypeSupported('video/webm')) {
-			  var options = {mimeType: 'video/webm'};
-			} else  if (MediaRecorder.isTypeSupported('video/mp4')) {
-			  //Safari 14.0.2 has an EXPERIMENTAL version of MediaRecorder enabled by default
-			  containerType = "video/mp4";
-			  var options = {mimeType: 'video/mp4'};
+			function tryMimeTypes(mimeTypes) {
+				for (const mime of mimeTypes) {
+					if (MediaRecorder.isTypeSupported(mime)) {
+						try {
+							new MediaRecorder(new MediaStream(), { mimeType: mime });
+							return mime;
+						} catch (err) {
+							console.warn(`Supported but failed to init recorder: ${mime}`, err);
+						}
+					}
+				}
+				return null;
 			}
-			log('Using '+options.mimeType);
-			mediaRecorder = new MediaRecorder(localStream, options);
+
+			// HEVC (H.265) variants
+			const hevcTypes = [
+				'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile, Level 4.1
+				'video/mp4;codecs=hvc1.1.6.L123.B0', // Main profile, Level 5.1
+				'video/mp4;codecs=hvc1', // Generic
+				'video/mp4;codecs=hev1.1.6.L93.B0', // Alternative HEVC brand
+				'video/mp4;codecs=hev1' // Generic alternative
+			];
+
+			// AV1 variants
+			const av1Types = [
+				'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4, 8-bit
+				'video/mp4;codecs=av01.0.12M.08', // Main profile, Level 5, 8-bit
+				'video/mp4;codecs=av01.0.08M.10', // Main profile, Level 4, 10-bit
+				'video/mp4;codecs=av01' // Generic
+			];
+
+			// VP9 / VP8 / H.264
+			const vp9Types = [
+				'video/webm;codecs=vp9.0',
+				'video/webm;codecs=vp9'
+			];
+
+			const vp8Types = [
+				'video/webm;codecs=vp8'
+			];
+
+			const h264Types = [
+				'video/webm;codecs=avc1.42E01E', // Baseline
+				'video/webm;codecs=avc1.4D401E', // Main
+				'video/webm;codecs=avc1'         // Generic
+			];
+
+			// Generic fallbacks
+			const webmTypes = [
+				'video/webm'
+			];
+
+			const mp4Types = [
+				'video/mp4'
+			];
+
+			// Check in priority order
+			let mime = tryMimeTypes(hevcTypes) ||
+								tryMimeTypes(av1Types) ||
+								tryMimeTypes(vp9Types) ||
+								tryMimeTypes(vp8Types) ||
+								tryMimeTypes(h264Types) ||
+								tryMimeTypes(webmTypes) ||
+								tryMimeTypes(mp4Types);
+
+			if (!mime) {
+				log("No supported MediaRecorder formats found.");
+			} else {
+				const options = { mimeType: mime };
+				let extension;
+				if (mime.includes('mp4')) {
+					containerType = 'video/mp4';
+					extension = '.mp4';
+				} else {
+					containerType = 'video/webm';
+					extension = '.webm';
+				}
+				log(`Selected format: ${mime} (${extension})`);
+				mediaRecorder = new MediaRecorder(localStream, options);
+			}
 		}else{
 			log('isTypeSupported is not supported, using default codecs for browser');
 			mediaRecorder = new MediaRecorder(localStream);
