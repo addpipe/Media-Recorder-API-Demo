@@ -13,6 +13,8 @@ var liveVideoElement = document.querySelector('#live');
 var playbackVideoElement = document.querySelector('#playback');
 var dataElement = document.querySelector('#data');
 var downloadLink = document.querySelector('a#downloadLink');
+const cameraSelect = document.getElementById('cameraSelect');
+const resSelect = document.getElementById('resolutionSelect');
 
 liveVideoElement.controls = false;
 playbackVideoElement.controls=false;
@@ -23,6 +25,101 @@ var count = 0;
 var localStream = null;
 var soundMeter  = null;
 var containerType = "video/webm"; //defaults to webm but we switch to mp4 on Safari 14.0.2+
+let currentDeviceId = "";
+let currentResolution = "hd";
+
+const resolutions = {
+	sd: { width: { ideal: 640 }, height: { ideal: 480 }, framerate:60 },
+	hd: { width: { ideal: 1280 }, height: { ideal: 720 }, framerate:60 },
+	fhd: { width: { ideal: 1920 }, height: { ideal: 1080 }, framerate:60 },
+	fourK: { width: { ideal: 3840 }, height: { ideal: 2160 }, framerate:60 },
+}
+
+async function populateDevices() {
+	const devices = await navigator.mediaDevices.enumerateDevices();
+	const videos = devices.filter(d => d.kind === 'videoinput');
+
+	cameraSelect.innerHTML = '';
+	videos.forEach((d, i) => {
+		const opt = document.createElement('option');
+		opt.value = d.deviceId;
+		opt.textContent = d.label || `Camera ${i + 1}`;
+		cameraSelect.appendChild(opt);
+	});
+}
+
+const callGetUserMedia = (deviceId = currentDeviceId, resolution = currentResolution) => {
+	let localConstraints = { ...constraints };
+
+	if (!!resolution) {
+		localConstraints.video = { ...resolutions[resolution] };
+		currentResolution = resolution;
+	}
+
+	if (!!deviceId) {
+		localConstraints.video = { ...localConstraints.video, deviceId: { exact: deviceId } };
+	}
+
+	// Stop old tracks
+	localStream && localStream.getTracks().forEach(track => track.stop());
+
+	navigator.mediaDevices.getUserMedia(localConstraints)
+		.then(function(stream) {
+			localStream = stream;
+			
+			localStream.getTracks().forEach(function(track) {
+				if(track.kind == "audio"){
+					track.onended = () => log("audio track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
+					track.onmute = () => log("audio track.onmute track.readyState="+track.readyState+", track.muted=" + track.muted);
+					track.onunmute = () => log("audio track.onunmute track.readyState="+track.readyState+", track.muted=" + track.muted);
+				}
+				if(track.kind == "video"){
+					track.onended = () => log("video track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
+					track.onmute = () => log("video track.onmute track.readyState="+track.readyState+", track.muted=" + track.muted);
+					track.onunmute = () => log("video track.onunmute track.readyState="+track.readyState+", track.muted=" + track.muted);
+				}
+			});
+			
+			liveVideoElement.srcObject = localStream;
+			liveVideoElement.play();
+			
+			try {
+				window.AudioContext = window.AudioContext || window.webkitAudioContext;
+				window.audioContext = new AudioContext();
+				} catch (e) {
+				log('Web Audio API not supported.');
+				}
+
+				soundMeter = window.soundMeter = new SoundMeter(window.audioContext);
+				soundMeter.connectToSource(localStream, function(e) {
+				if (e) {
+					log(e);
+					return;
+				}else{
+						/*setInterval(function() {
+						log(Math.round(soundMeter.instant.toFixed(2) * 100));
+					}, 100);*/
+				}
+				});
+				if (deviceId) {
+					currentDeviceId = deviceId;
+				} else {
+					populateDevices();
+				}
+			
+		}).catch(function(err) {
+			/* handle the error */
+			log('navigator.getUserMedia error: '+err);
+		});
+}
+
+cameraSelect.addEventListener("change", (e) => {
+	callGetUserMedia(e.target.value);
+})
+
+resSelect.addEventListener("change", (e) => {
+	callGetUserMedia(currentDeviceId, e.target.value);
+})
 
 if (!navigator.mediaDevices.getUserMedia){
 	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Safari, Edge, Firefox or Chrome');
@@ -30,49 +127,7 @@ if (!navigator.mediaDevices.getUserMedia){
 	if (window.MediaRecorder == undefined) {
 			alert('MediaRecorder not supported on your browser, use the latest version of Safari, Edge, Firefox or Chrome');
 	}else{
-		navigator.mediaDevices.getUserMedia(constraints)
-			.then(function(stream) {
-				localStream = stream;
-				
-				localStream.getTracks().forEach(function(track) {
-					if(track.kind == "audio"){
-						track.onended = () => log("audio track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
-						track.onmute = () => log("audio track.onmute track.readyState="+track.readyState+", track.muted=" + track.muted);
-						track.onunmute = () => log("audio track.onunmute track.readyState="+track.readyState+", track.muted=" + track.muted);
-					}
-					if(track.kind == "video"){
-						track.onended = () => log("video track.onended track.readyState="+track.readyState+", track.muted=" + track.muted);
-						track.onmute = () => log("video track.onmute track.readyState="+track.readyState+", track.muted=" + track.muted);
-						track.onunmute = () => log("video track.onunmute track.readyState="+track.readyState+", track.muted=" + track.muted);
-					}
-				});
-				
-				liveVideoElement.srcObject = localStream;
-				liveVideoElement.play();
-				
-				try {
-					window.AudioContext = window.AudioContext || window.webkitAudioContext;
-					window.audioContext = new AudioContext();
-				  } catch (e) {
-					log('Web Audio API not supported.');
-				  }
-
-				  soundMeter = window.soundMeter = new SoundMeter(window.audioContext);
-				  soundMeter.connectToSource(localStream, function(e) {
-					if (e) {
-						log(e);
-						return;
-					}else{
-					   /*setInterval(function() {
-						  log(Math.round(soundMeter.instant.toFixed(2) * 100));
-					  }, 100);*/
-					}
-				  });
-				
-			}).catch(function(err) {
-				/* handle the error */
-				log('navigator.getUserMedia error: '+err);
-			});
+		callGetUserMedia();
 	}
 }
 

@@ -15,6 +15,16 @@
 	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a 1280x720 video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
 	<div>
 		<video id="live" controls autoplay playsinline muted></video> <video id="playback" controls autoplay></video><br>
+		<div style="display: flex; gap: 5px; flex-wrap: wrap;">
+			<select id="cameraSelect"></select>
+			<select id="resolutionSelect">
+				<option value="sd">640x480</option>
+				<option value="hd" selected>1280x720 (HD)</option>
+				<option value="fhd">1920x1080 (Full HD)</option>
+				<option value="fourK">3840x2160 (4K)</option>
+			</select>
+		</div>
+
 		<div id="controls">
 			<button id="rec" onclick="onBtnRecordClicked()">Record</button>
 			<button id="pauseRes"   onclick="onPauseResumeClicked()" disabled>Pause</button>

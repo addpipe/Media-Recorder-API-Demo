@@ -84,15 +84,18 @@ video {
   margin: 10px auto;
   width: 320px;
   height: 240px;
+  max-width: 100%;
 }
 
 #controls {
   display: flex;
   margin-top: 2rem;
-  max-width: 28em;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 5px;
 }
 
-button {
+button, select {
   flex-grow: 1;
   height: 3rem;
   min-width: 10rem;
@@ -108,6 +111,8 @@ button {
   color:#ffffff;
   font-weight: bold;
   font-size: 1rem;
+  /* margin: 0 auto; */
+  max-width: max-content;
 }
 button:hover, button:focus {
   outline: none;
