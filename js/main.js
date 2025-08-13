@@ -94,13 +94,18 @@ function onBtnRecordClicked (){
 			*/
 			function tryMimeTypes(mimeTypes) {
 				for (const mime of mimeTypes) {
+					log(`Check if format is supported: ${mime}`)
 					if (MediaRecorder.isTypeSupported(mime)) {
 						try {
-							new MediaRecorder(new MediaStream(), { mimeType: mime });
+							const testMediaRecorder = new MediaRecorder(localStream, { mimeType: mime });
+							testMediaRecorder.start();
+							testMediaRecorder.stop();
 							return mime;
 						} catch (err) {
-							console.warn(`Supported but failed to init recorder: ${mime}`, err);
+							log(`Supported but failed to init recorder: ${mime}`, err);
 						}
+					} else {
+						log(`Not supported: ${mime}`)
 					}
 				}
 				return null;
