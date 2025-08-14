@@ -166,6 +166,14 @@ function onBtnRecordClicked (){
 				return null;
 			}
 
+			// AV1 variants
+			const av1Types = [
+				'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4, 8-bit
+				'video/mp4;codecs=av01.0.12M.08', // Main profile, Level 5, 8-bit
+				'video/mp4;codecs=av01.0.08M.10', // Main profile, Level 4, 10-bit
+				'video/mp4;codecs=av01' // Generic
+			];
+
 			// HEVC (H.265) variants
 			const hevcTypes = [
 				'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile, Level 4.1
@@ -175,28 +183,20 @@ function onBtnRecordClicked (){
 				'video/mp4;codecs=hev1' // Generic alternative
 			];
 
-			// AV1 variants
-			const av1Types = [
-				'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4, 8-bit
-				'video/mp4;codecs=av01.0.12M.08', // Main profile, Level 5, 8-bit
-				'video/mp4;codecs=av01.0.08M.10', // Main profile, Level 4, 10-bit
-				'video/mp4;codecs=av01' // Generic
-			];
-
 			// VP9 / VP8 / H.264
 			const vp9Types = [
 				'video/webm;codecs=vp9.0',
 				'video/webm;codecs=vp9'
 			];
 
-			const vp8Types = [
-				'video/webm;codecs=vp8'
-			];
-
 			const h264Types = [
 				'video/webm;codecs=avc1.42E01E', // Baseline
 				'video/webm;codecs=avc1.4D401E', // Main
 				'video/webm;codecs=avc1'         // Generic
+			];
+
+			const vp8Types = [
+				'video/webm;codecs=vp8'
 			];
 
 			// Generic fallbacks
@@ -209,11 +209,11 @@ function onBtnRecordClicked (){
 			];
 
 			// Check in priority order
-			let mime = tryMimeTypes(hevcTypes) ||
-								tryMimeTypes(av1Types) ||
+			let mime = tryMimeTypes(av1Types) ||
+								tryMimeTypes(hevcTypes) ||
 								tryMimeTypes(vp9Types) ||
-								tryMimeTypes(vp8Types) ||
 								tryMimeTypes(h264Types) ||
+								tryMimeTypes(vp8Types) ||
 								tryMimeTypes(webmTypes) ||
 								tryMimeTypes(mp4Types);
 
