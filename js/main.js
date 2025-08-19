@@ -15,6 +15,8 @@ var dataElement = document.querySelector('#data');
 var downloadLink = document.querySelector('a#downloadLink');
 const cameraSelect = document.getElementById('cameraSelect');
 const resSelect = document.getElementById('resolutionSelect');
+const codecSelect = document.getElementById('codecSelect');
+let selectedCodec = "auto";
 
 liveVideoElement.controls = false;
 playbackVideoElement.controls=false;
@@ -121,6 +123,10 @@ resSelect.addEventListener("change", (e) => {
 	callGetUserMedia(currentDeviceId, e.target.value);
 })
 
+codecSelect.addEventListener("change", (e) => {
+	selectedCodec = e.target.value;
+})
+
 if (!navigator.mediaDevices.getUserMedia){
 	alert('navigator.mediaDevices.getUserMedia not supported on your browser, use the latest version of Safari, Edge, Firefox or Chrome');
 }else{
@@ -135,12 +141,6 @@ function onBtnRecordClicked (){
 	if (localStream == null) {
 		alert('Could not get local stream from mic/camera');
 	}else {
-		recBtn.disabled = true;
-		pauseResBtn.disabled = false;
-		stopBtn.disabled = false;
-
-		chunks = [];
-
 		/* use the stream */
 		log('Start recording...');
 		if (typeof MediaRecorder.isTypeSupported == 'function'){
@@ -166,60 +166,79 @@ function onBtnRecordClicked (){
 				return null;
 			}
 
-			// AV1 variants
-			const av1Types = [
-				'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4, 8-bit
-				'video/mp4;codecs=av01.0.12M.08', // Main profile, Level 5, 8-bit
-				'video/mp4;codecs=av01.0.08M.10', // Main profile, Level 4, 10-bit
-				'video/mp4;codecs=av01' // Generic
-			];
+			const codecs = {
+				// AV1 variants
+				av1Types: [
+					'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4.0, 8-bit (most common)
+					'video/mp4;codecs=av01', // Generic fallback
+				],
 
-			// HEVC (H.265) variants
-			const hevcTypes = [
-				'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile, Level 4.1
-				'video/mp4;codecs=hvc1.1.6.L123.B0', // Main profile, Level 5.1
-				'video/mp4;codecs=hvc1', // Generic
-				'video/mp4;codecs=hev1.1.6.L93.B0', // Alternative HEVC brand
-				'video/mp4;codecs=hev1' // Generic alternative
-			];
+				// HEVC (H.265) variants
+				hevcTypes: [
+					'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile, Level 4.1 (baseline)
+					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, Level 4.1 (alternative brand)
+				],
 
-			// VP9 / VP8 / H.264
-			const vp9Types = [
-				'video/webm;codecs=vp9.0',
-				'video/webm;codecs=vp9'
-			];
+				// VP9 - Google's open-source codec
+				vp9Types: [
+					'video/webm;codecs=vp9.0', // Profile 0 (8-bit 4:2:0)
+					'video/webm;codecs=vp9', // Generic fallback
+				],
 
-			const h264Types = [
-				'video/webm;codecs=avc1.42E01E', // Baseline
-				'video/webm;codecs=avc1.4D401E', // Main
-				'video/webm;codecs=avc1'         // Generic
-			];
+				// H.264 (AVC)
+				h264Types: [
+					'video/mp4;codecs=avc1.4D001E', // Main profile, Level 3.0
+					'video/mp4;codecs=avc1.42001E', // Baseline profile, Level 3.0
+					'video/mp4;codecs=avc3.42001E', // Baseline profile, Level 3.0 (variable resolution)
+				],
 
-			const vp8Types = [
-				'video/webm;codecs=vp8'
-			];
+				// H.264 in Matroska container
+				h264MatroskaTypes: [
+					'video/x-matroska;codecs=avc1.4d000c', // Main profile, Level 1.2
+					'video/x-matroska;codecs=avc1.42000c', // Baseline profile, Level 1.2
+				],
 
-			// Generic fallbacks
-			const webmTypes = [
-				'video/webm'
-			];
+				// VP8 - older Google codec
+				vp8Types: [
+					'video/webm;codecs=vp8' // VP8 codec
+				],
 
-			const mp4Types = [
-				'video/mp4'
-			];
+				// Generic container fallbacks (no specific codec info)
+				webmTypes: [
+					'video/webm'
+				],
+
+				mp4Types: [
+					'video/mp4'
+				]
+			};
+
+			const getMime = () => {
+				if (selectedCodec === "auto") {
+					return tryMimeTypes(codecs.av1Types) ||
+								tryMimeTypes(codecs.hevcTypes) ||
+								tryMimeTypes(codecs.vp9Types) ||
+								tryMimeTypes(codecs.h264Types) ||
+								tryMimeTypes(codecs.vp8Types) ||
+								tryMimeTypes(codecs.webmTypes) ||
+								tryMimeTypes(codecs.mp4Types);
+				} else {
+					return tryMimeTypes(codecs[`${selectedCodec}Types`]);
+				}
+			}
 
 			// Check in priority order
-			let mime = tryMimeTypes(av1Types) ||
-								tryMimeTypes(hevcTypes) ||
-								tryMimeTypes(vp9Types) ||
-								tryMimeTypes(h264Types) ||
-								tryMimeTypes(vp8Types) ||
-								tryMimeTypes(webmTypes) ||
-								tryMimeTypes(mp4Types);
+			let mime = getMime();
 
 			if (!mime) {
 				log("No supported MediaRecorder formats found.");
+				return;
 			} else {
+				recBtn.disabled = true;
+				pauseResBtn.disabled = false;
+				stopBtn.disabled = false;
+				chunks = [];
+
 				const options = { mimeType: mime };
 				let extension;
 				if (mime.includes('mp4')) {
