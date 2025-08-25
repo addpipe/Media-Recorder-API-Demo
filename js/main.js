@@ -169,36 +169,64 @@ function onBtnRecordClicked (){
 			const codecs = {
 				// AV1 variants
 				av1Types: [
-					'video/mp4;codecs=av01.0.08M.08', // Main profile, Level 4.0, 8-bit (most common)
-					'video/mp4;codecs=av01', // Generic fallback
+					'video/mp4;codecs=av01.0.08M.08' // Main profile
 				],
 
-				// HEVC (H.265) variants
+				// HEVC (H.265)
 				hevcTypes: [
-					'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile, Level 4.1 (baseline)
-					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, Level 4.1 (alternative brand)
+					'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile,
+					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, (variable resolution)
 				],
 
-				// VP9 - Google's open-source codec
+				hevcVariableTypes: [
+					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, (variable resolution)
+				],
+
+				// VP9
 				vp9Types: [
-					'video/webm;codecs=vp9.0', // Profile 0 (8-bit 4:2:0)
-					'video/webm;codecs=vp9', // Generic fallback
+					'video/webm;codecs=vp9.0' // Profile 0
 				],
 
 				// H.264 (AVC)
 				h264Types: [
-					'video/mp4;codecs=avc1.4D001E', // Main profile, Level 3.0
-					'video/mp4;codecs=avc1.42001E', // Baseline profile, Level 3.0
-					'video/mp4;codecs=avc3.42001E', // Baseline profile, Level 3.0 (variable resolution)
+					'video/mp4;codecs=avc1.42001E', // Baseline profile
+					'video/mp4;codecs=avc1.4D001E', // Main profile
+					'video/mp4;codecs=avc1.58001E', // Extended profile
+					'video/mp4;codecs=avc1.64001E', // High profile
+					'video/mp4;codecs=avc3.42001E' // Baseline profile (variable resolution)
+				],
+
+				h264BaselineTypes: [
+					'video/mp4;codecs=avc1.42001E', // Baseline profile
+				],
+
+				h264MainTypes: [
+					'video/mp4;codecs=avc1.4D001E', // Main profile
+				],
+
+				h264ExtendedTypes: [
+					'video/mp4;codecs=avc1.58001E', // Extended profile
+				],
+
+				h264HighTypes: [
+					'video/mp4;codecs=avc1.64001E', // High profile
+				],
+
+				h264VariableTypes: [
+					'video/mp4;codecs=avc3.42001E', // Baseline profile (variable resolution)
+				],
+
+				h264WebmTypes: [
+					'video/webm;codecs=avc1', // webm
 				],
 
 				// H.264 in Matroska container
 				h264MatroskaTypes: [
 					'video/x-matroska;codecs=avc1.4d000c', // Main profile, Level 1.2
-					'video/x-matroska;codecs=avc1.42000c', // Baseline profile, Level 1.2
+					'video/x-matroska;codecs=avc1.42000c' // Baseline profile, Level 1.2
 				],
 
-				// VP8 - older Google codec
+				// VP8
 				vp8Types: [
 					'video/webm;codecs=vp8' // VP8 codec
 				],

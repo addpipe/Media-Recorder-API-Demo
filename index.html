@@ -12,7 +12,7 @@
 <div>
 	<h1>Media Recorder API Demo</h1>
 	<p><small>Made by the <a href="https://addpipe.com">Pipe Recording Platform</a></small></p>
-	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a 1280x720 video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
+	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
 	<div>
 		<video id="live" controls autoplay playsinline muted></video> <video id="playback" controls autoplay playsinline></video><br>
 		<div style="display: flex; gap: 5px; flex-wrap: wrap;">
@@ -26,10 +26,16 @@
 			<select id="codecSelect">
 				<option value="auto" selected>Auto</option>
 				<option value="av1">AV1</option>
-				<option value="hevc">HEVC</option>
+				<option value="hevc">HEVC (H.265)</option>
+				<option value="hevcVariable">HEVC (H.265) Variable Resolution</option>
 				<option value="vp9">VP9</option>
-				<option value="h264">H264</option>
-				<option value="h264Matroska">H264 Matroska</option>
+				<option value="h264">H.264 mp4</option>
+				<option value="h264Webm">H.264 webm</option>
+				<option value="h264Variable">H.264 Variable Resolution mp4</option>
+				<option value="h264Baseline">H.264 Baseline mp4</option>
+				<option value="h264Main">H.264 Main mp4</option>
+				<option value="h264Extended">H.264 Extended mp4</option>
+				<option value="h264High">H.264 High mp4</option>
 				<option value="vp8">VP8</option>
 			</select>
 		</div>
