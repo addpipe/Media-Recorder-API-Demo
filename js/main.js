@@ -238,11 +238,17 @@ function onBtnRecordClicked (){
 
 				mp4Types: [
 					'video/mp4'
+				],
+
+				default: [
+					''
 				]
 			};
 
 			const getMime = () => {
-				if (selectedCodec === "auto") {
+				if (selectedCodec === "default") {
+					return "browser-default";
+				} else if (selectedCodec === "auto") {
 					return tryMimeTypes(codecs.av1Types) ||
 								tryMimeTypes(codecs.hevcTypes) ||
 								tryMimeTypes(codecs.vp9Types) ||
@@ -267,17 +273,22 @@ function onBtnRecordClicked (){
 				stopBtn.disabled = false;
 				chunks = [];
 
-				const options = { mimeType: mime };
-				let extension;
-				if (mime.includes('mp4')) {
-					containerType = 'video/mp4';
-					extension = '.mp4';
+				if (mime === "browser-default") {
+					mediaRecorder = new MediaRecorder(localStream);
+					log(`Using browser-default codec`);
 				} else {
-					containerType = 'video/webm';
-					extension = '.webm';
+					const options = { mimeType: mime };
+					let extension;
+					if (mime.includes('mp4')) {
+						containerType = 'video/mp4';
+						extension = '.mp4';
+					} else {
+						containerType = 'video/webm';
+						extension = '.webm';
+					}
+					log(`Selected format: ${mime} (${extension})`);
+					mediaRecorder = new MediaRecorder(localStream, options);
 				}
-				log(`Selected format: ${mime} (${extension})`);
-				mediaRecorder = new MediaRecorder(localStream, options);
 			}
 		}else{
 			log('isTypeSupported is not supported, using default codecs for browser');
@@ -297,7 +308,16 @@ function onBtnRecordClicked (){
 
 		mediaRecorder.onstart = function(){
 			log('mediaRecorder.onstart, mediaRecorder.state = ' + mediaRecorder.state);
-			
+
+			if (mime === "browser-default") {
+      	log(`mediaRecorder.mimeType: ${mediaRecorder.mimeType}`);
+				if (mediaRecorder.mimeType.includes('mp4')) {
+					containerType = 'video/mp4';
+				} else {
+					containerType = 'video/webm';
+				}
+			}
+
 			localStream.getTracks().forEach(function(track) {
               if(track.kind == "audio"){
                 log("onstart - Audio track.readyState="+track.readyState+", track.muted=" + track.muted);

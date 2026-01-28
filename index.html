@@ -3,9 +3,10 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Demo of the MediaRecorder API for recording audio and video in the browser. Test real-time media capture with playback support.">
 	<base target="_blank">
 	<title>Media Recorder API Demo - addpipe.com</title>
-		
+  <link rel="canonical" href="https://addpipe.com/media-recorder-api-demo/"/>
 	<link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
@@ -24,11 +25,12 @@
 				<option value="fourK">3840x2160 (4K)</option>
 			</select>
 			<select id="codecSelect">
-				<option value="auto" selected>Auto</option>
-				<option value="av1">AV1</option>
-				<option value="hevc">HEVC (H.265)</option>
-				<option value="hevcVariable">HEVC (H.265) Variable Resolution</option>
-				<option value="vp9">VP9</option>
+				<option value="default" selected>Browser Default</option>
+				<option value="auto">Auto (try all listed, starting from best)</option>
+				<option value="av1">AV1 mp4</option>
+				<option value="hevc">HEVC (H.265) mp4</option>
+				<option value="hevcVariable">HEVC (H.265) Variable Resolution mp4</option>
+				<option value="vp9">VP9 webm</option>
 				<option value="h264">H.264 mp4</option>
 				<option value="h264Webm">H.264 webm</option>
 				<option value="h264Variable">H.264 Variable Resolution mp4</option>
@@ -36,10 +38,11 @@
 				<option value="h264Main">H.264 Main mp4</option>
 				<option value="h264Extended">H.264 Extended mp4</option>
 				<option value="h264High">H.264 High mp4</option>
-				<option value="vp8">VP8</option>
+				<option value="vp8">VP8 webm</option>
 			</select>
 		</div>
 
+	</div>
 		<div id="controls">
 			<button id="rec" onclick="onBtnRecordClicked()">Record</button>
 			<button id="pauseRes"   onclick="onPauseResumeClicked()" disabled>Pause</button>
