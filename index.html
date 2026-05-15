@@ -12,7 +12,7 @@
 <div>
 	<h1>Media Recorder API Demo</h1>
 	<p><small>Made by the <a href="https://addpipe.com">Pipe Recording Platform</a></small></p>
-	<p>The demo below uses the <strong>Media​Stream Recording API</strong> and <strong>getUserMedia()</strong> to record a video file. For more info check out our article: <a title="Media Recorder API in Action on Chrome and Firefox" target="_blank" href="https://blog.addpipe.com/mediarecorder-api/">Media Recorder API in Action on Chrome and Firefox</a>.</h2>
+	<p>The demo below uses <strong>getUserMedia()</strong> to capture video from a webcam and the <strong>MediaStream Recording API</strong> to record the stream to a video file in 1 second chunks/timeslice. It allows you to select the desired webcam, resolution and the video codec + container combo. For more information, check out our article: <a href="https://blog.addpipe.com/mediarecorder-api/" target="_blank">Media Recorder API in Action on Chrome and Firefox</a></p>
 	<div>
 		<video id="live" controls autoplay playsinline muted></video> <video id="playback" controls autoplay playsinline></video><br>
 		<div style="display: flex; gap: 5px; flex-wrap: wrap;">
