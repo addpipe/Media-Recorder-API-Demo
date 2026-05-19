@@ -48,9 +48,8 @@ a:hover {
 }
 
 a#downloadLink {
-  display: block;
+  display: none;
   margin: 0 0 1em 0;
-  min-height: 1.2em;
 }
 
 div#container {
@@ -69,23 +68,43 @@ h3 {
   white-space: nowrap;
 }
 
+p#mimeInfo {
+  font-family: Courier New, monospace;
+  font-size: 0.85em;
+  color: #555;
+  margin: 0.6em 0 0 0;
+  min-height: 1.2em;
+}
+
 p#data {
   border-top: 1px dotted #666;
   font-family: Courier New, monospace;
   line-height: 1.3em;
-  min-height: 6em;
-  max-height: 1000px;
-  overflow-y: auto;
+  max-height: 300px;
+  overflow-y: scroll;
   padding: 1em 0 0 0;
+}
+
+p#data.hidden {
+  display: none;
+}
+
+button#toggleLogsBtn {
+  background: #555;
+  margin-top: 1.5rem;
+}
+
+button#toggleLogsBtn:hover,
+button#toggleLogsBtn:focus {
+  background: #333;
 }
 
 video {
   background: #222;
-  margin: 10px auto;
-  width: 320px;
-  height: 240px;
+  margin: 10px 5px 10px 0;
+  width: 480px;
+  aspect-ratio: 16 / 9;
   max-width: 100%;
-  max-height: fit-content;
 }
 
 #controls {
@@ -132,6 +151,9 @@ button:disabled {
 }
 button:first-child {
   margin-left: 0;
+}
+#playback:not([src]) {
+  display: none;
 }
 
 #codecTable {
