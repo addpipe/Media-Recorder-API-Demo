@@ -8,6 +8,7 @@ var constraints = {audio:true,video:{width:{min:640,ideal:1280,max:1280 },height
 var recBtn = document.querySelector('button#rec');
 var pauseResBtn = document.querySelector('button#pauseRes');
 var stopBtn = document.querySelector('button#stop');
+var requestDataBtn = document.querySelector('button#requestDataButton');
 
 var liveVideoElement = document.querySelector('#live');
 var playbackVideoElement = document.querySelector('#playback');
@@ -295,7 +296,9 @@ function onBtnRecordClicked (){
 				recBtn.disabled = true;
 				pauseResBtn.disabled = false;
 				stopBtn.disabled = false;
+				requestDataBtn.disabled = false;
 				chunks = [];
+				downloadLink.style.display = 'none';
 
 				if (mime === "browser-default") {
 					mediaRecorder = new MediaRecorder(localStream);
@@ -341,6 +344,8 @@ function onBtnRecordClicked (){
 					containerType = 'video/webm';
 				}
 			}
+
+			document.getElementById('mimeInfo').textContent = 'Active codec: ' + mediaRecorder.mimeType;
 
 			localStream.getTracks().forEach(function(track) {
               if(track.kind == "audio"){
@@ -393,6 +398,7 @@ function onBtnRecordClicked (){
 			}
 
 			downloadLink.innerHTML = 'Download '+name;
+			downloadLink.style.display = 'block';
 
 			downloadLink.setAttribute( "download", name);
 			downloadLink.setAttribute( "name", name);
@@ -441,6 +447,14 @@ function onBtnStopClicked(){
 	recBtn.disabled = false;
 	pauseResBtn.disabled = true;
 	stopBtn.disabled = true;
+	requestDataBtn.disabled = true;
+}
+
+function onRequestDataClicked(){
+	if(mediaRecorder && mediaRecorder.state === 'recording'){
+		mediaRecorder.requestData();
+		log('mediaRecorder.requestData() called');
+	}
 }
 
 function onPauseResumeClicked(){
@@ -480,8 +494,15 @@ function onStateClicked(){
 }
 
 function log(message){
-	dataElement.innerHTML = dataElement.innerHTML+ '<br>' + new Date().toISOString() + " " + message;
-	console.log(message)
+	dataElement.innerHTML = dataElement.innerHTML + '<br>' + new Date().toISOString() + ' ' + message;
+	dataElement.scrollTop = dataElement.scrollHeight;
+	console.log(message);
+}
+
+function onToggleLogsClicked(){
+	var btn = document.querySelector('#toggleLogsBtn');
+	var isHidden = dataElement.classList.toggle('hidden');
+	btn.textContent = isHidden ? 'Show logs' : 'Hide logs';
 }
 
 // Define the AudioWorkletProcessor as a string to be dynamically loaded

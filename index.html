@@ -47,9 +47,12 @@
 			<button id="pauseRes"   onclick="onPauseResumeClicked()" disabled>Pause</button>
 			<button id="stop"  onclick="onBtnStopClicked()" disabled>Stop</button>
 			<button id="stateButton" onclick="onStateClicked()">trace state</button>
+			<button id="requestDataButton" onclick="onRequestDataClicked()" disabled>request data</button>
 		</div>
+		<p id="mimeInfo"></p>
 	</div>
 	<a id="downloadLink" download="mediarecorder.webm" name="mediarecorder.webm" href></a>
+	<button id="toggleLogsBtn" onclick="onToggleLogsClicked()">Hide logs</button>
 	<p id="data"></p>
 	<script src="js/adapter-latest.js"></script>
 	<script src="js/main.js"></script>
