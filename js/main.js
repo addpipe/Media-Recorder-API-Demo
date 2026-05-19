@@ -169,31 +169,48 @@ function onBtnRecordClicked (){
 			const codecs = {
 				// AV1 variants
 				av1Types: [
-					'video/mp4;codecs=av01.0.08M.08' // Main profile
+					'video/mp4;codecs=av01.0.19M.08,mp4a.40.2', // Main profile, Level 6.2, AAC LC
+					'video/mp4;codecs=av01.0.19M.08,opus',       // Main profile, Level 6.2, Opus
+					'video/webm;codecs=av01,opus',               // WebM, Opus
+					'video/mp4;codecs=av01.0.08M.08'             // Main profile, Level 4.0 (legacy)
 				],
 
 				// HEVC (H.265)
 				hevcTypes: [
-					'video/mp4;codecs=hvc1.1.6.L93.B0', // Main profile,
-					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, (variable resolution)
+					'video/mp4;codecs=hvc1.1.6.L186.B0,mp4a.40.2', // hvc1, Level 6.2, AAC LC
+					'video/mp4;codecs=hvc1.1.6.L186.B0,opus',       // hvc1, Level 6.2, Opus
+					'video/mp4;codecs=hev1.1.6.L186.B0,mp4a.40.2', // hev1, Level 6.2, AAC LC
+					'video/mp4;codecs=hev1.1.6.L186.B0,opus',       // hev1, Level 6.2, Opus
+					'video/x-matroska;codecs=hvc1.1.6.L186.B0,opus', // Matroska, Opus
+					'video/mp4;codecs=hvc1.1.6.L93.B0',             // hvc1, Level 3.1 (legacy)
+					'video/mp4;codecs=hev1.1.6.L93.B0'              // hev1, Level 3.1 (legacy)
 				],
 
 				hevcVariableTypes: [
-					'video/mp4;codecs=hev1.1.6.L93.B0' // Main profile, (variable resolution)
+					'video/mp4;codecs=hev1.1.6.L186.B0,mp4a.40.2', // Level 6.2, AAC LC
+					'video/mp4;codecs=hev1.1.6.L186.B0,opus',       // Level 6.2, Opus
+					'video/mp4;codecs=hev1.1.6.L93.B0'              // Level 3.1 (legacy)
 				],
 
 				// VP9
 				vp9Types: [
-					'video/webm;codecs=vp9.0' // Profile 0
+					'video/webm;codecs=vp9,opus',     // WebM, Opus
+					'video/mp4;codecs=vp9,mp4a.40.2', // MP4, AAC LC
+					'video/mp4;codecs=vp9,opus',      // MP4, Opus
+					'video/webm;codecs=vp9.0'         // Profile 0 (legacy)
 				],
 
 				// H.264 (AVC)
 				h264Types: [
-					'video/mp4;codecs=avc1.42001E', // Baseline profile
-					'video/mp4;codecs=avc1.4D001E', // Main profile
-					'video/mp4;codecs=avc1.58001E', // Extended profile
-					'video/mp4;codecs=avc1.64001E', // High profile
-					'video/mp4;codecs=avc3.42001E' // Baseline profile (variable resolution)
+					'video/mp4;codecs=avc1.64003E,mp4a.40.2', // High profile, Level 6.2, AAC LC
+					'video/mp4;codecs=avc1.64003E,opus',       // High profile, Level 6.2, Opus
+					'video/mp4;codecs=avc3.64003E,mp4a.40.2', // High profile, Level 6.2, variable, AAC LC
+					'video/mp4;codecs=avc3.64003E,opus',       // High profile, Level 6.2, variable, Opus
+					'video/mp4;codecs=avc1.42001E',            // Baseline profile
+					'video/mp4;codecs=avc1.4D001E',            // Main profile
+					'video/mp4;codecs=avc1.58001E',            // Extended profile
+					'video/mp4;codecs=avc1.64001E',            // High profile, Level 3.0
+					'video/mp4;codecs=avc3.42001E'             // Baseline profile, variable resolution
 				],
 
 				h264BaselineTypes: [
@@ -209,26 +226,32 @@ function onBtnRecordClicked (){
 				],
 
 				h264HighTypes: [
-					'video/mp4;codecs=avc1.64001E', // High profile
+					'video/mp4;codecs=avc1.64003E,mp4a.40.2', // High profile, Level 6.2, AAC LC
+					'video/mp4;codecs=avc1.64003E,opus',       // High profile, Level 6.2, Opus
+					'video/mp4;codecs=avc1.64001E',            // High profile, Level 3.0
 				],
 
 				h264VariableTypes: [
-					'video/mp4;codecs=avc3.42001E', // Baseline profile (variable resolution)
+					'video/mp4;codecs=avc3.64003E,mp4a.40.2', // High profile, Level 6.2, AAC LC
+					'video/mp4;codecs=avc3.64003E,opus',       // High profile, Level 6.2, Opus
+					'video/mp4;codecs=avc3.42001E',            // Baseline profile (legacy)
 				],
 
 				h264WebmTypes: [
-					'video/webm;codecs=avc1', // webm
+					'video/webm;codecs=h264,opus', // WebM, Opus
+					'video/webm;codecs=avc1',      // legacy
 				],
 
 				// H.264 in Matroska container
 				h264MatroskaTypes: [
 					'video/x-matroska;codecs=avc1.4d000c', // Main profile, Level 1.2
-					'video/x-matroska;codecs=avc1.42000c' // Baseline profile, Level 1.2
+					'video/x-matroska;codecs=avc1.42000c'  // Baseline profile, Level 1.2
 				],
 
 				// VP8
 				vp8Types: [
-					'video/webm;codecs=vp8' // VP8 codec
+					'video/webm;codecs=vp8,opus', // WebM, Opus
+					'video/webm;codecs=vp8'       // legacy
 				],
 
 				// Generic container fallbacks (no specific codec info)
