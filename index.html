@@ -59,94 +59,95 @@
 <span style="color:red">Issues:</span>
 <ul><li>Pause does not stop audio recording on Chrome 49,50</li></ul>
 <h2>Containers &amp; codecs:</h2>
-<h3>Chrome</h3>
-<ul>
-	<li><b>47+</b></li>
-	<ul>
-		<li>Container: WebM</li>
-		<li>Video: VP8</li>
-		<li>Audio: none</li>
-	</ul>
-	<li><b>49+</b></li>
-	<ul>
-		<li>Container: WebM</li>
-		<li>Video: VP8, VP9</li>
-		<li>Audio: Opus @ 48kHz</li>
-	</ul>
-	<li><b>52+</b></li>
-	<ul>
-		<li>Container: WebM</li>
-		<li>Video: VP8, VP9, H264</li>
-		<li>Audio: Opus @ 48kHz</li>
-	</ul>
-	<li><b>64+</b></li>
-	<ul>
-		<li>Container: webm</li>
-		<li>Video: VP8, VP9, H264</li>
-		<li>Audio: Opus, PCM @ 48kHz</li>
-	</ul>
-	<li><b>126+</b></li>
-	<ul>
-		<li>Container: WebM, MP4</li>
-		<li>Video: VP8, VP9, H264, AV1*</li>
-		<li>Audio: Opus, PCM @ 48kHz</li>
-	</ul>
-	<li><b>136+</b></li>
-	<ul>
-		<li>Container: WebM, MP4</li>
-		<li>Video: VP8, VP9, H264, AV1*, HEVC**</li>
-		<li>Audio: Opus, PCM @ 48kHz</li>
-	</ul>
-</ul>
-<p><i>* Chrome on macOS always uses software AV1 encoding.</i> <a href="https://issues.chromium.org/issues/404291878#comment15" target="_blank" rel="noopener noreferrer">(Source)</a></p>
-<p><i>** HEVC encoding is only supported if the user's device and operating system provide the necessary capabilities.</i> <a href="https://developer.chrome.com/release-notes/136#h26x_codec_support_updates_for_mediarecorder" target="_blank" rel="noopener noreferrer">(Source)</a></p>
-<p><i>*** The MediaStream Recording API implementation in Chrome will produce a fragmented MP4 (fMP4).</p>
-
-<h3>Firefox</h3>
-<ul>
-	<li><b>30+</b></li>
-	<ul>
-		<li>Container: WebM</li>
-		<li>Video: VP8</li>
-		<li>Vorbis/Opus @ 44.1 kHz</li>
-	</ul>
-</ul>
-
-<h3>Safari on macOS</h3>
-<ul>
-	<li><b>14.0.2+</b></li>
-	<ul>
-		<li>Container: MP4</li>
-		<li>Video: H264</li>
-		<li>Stereo AAC @ 48kHz</li>
-	</ul>
-	<li><b>18.4+</b></li>
-	<ul>
-		<li>Container: MP4, WebM</li>
-		<li>Video: H264, VP8, VP9, HEVC, AV1*</li>
-		<li>Stereo AAC, Opus @ 48kHz</li>
-	</ul>
-</ul>
-<p><i>* AV1 video tracks are supported on devices with AV1 hardware support.</i> <a href="https://webkit.org/blog/16574/webkit-features-in-safari-18-4/" target="_blank" rel="noopener noreferrer">(Source)</a></p>
-<p><i>** The MediaStream Recording API implementation in Safari on macOS will produce a fragmented MP4 (fMP4).</p>
-
-<h3>Safari on iOS</h3>
-<ul>
-	<li><b>14.3+</b></li>
-	<ul>
-		<li>Container: MP4</li>
-		<li>Video: H264</li>
-		<li>Stereo AAC @ 44.1kHz or 48kHz</li>
-	</ul>
-	<li><b>18.4+</b></li>
-	<ul>
-		<li>Container: MP4, WebM</li>
-		<li>Video: H264, VP8, VP9, HEVC, AV1*</li>
-		<li>Stereo AAC, Opus @ 44.1kHz or 48kHz</li>
-	</ul>
-</ul>
-<p><i>* AV1 video tracks are supported on devices with AV1 hardware support.</i> <a href="https://webkit.org/blog/16574/webkit-features-in-safari-18-4/" target="_blank" rel="noopener noreferrer">(Source)</a></p>
-<p><i>** The MediaStream Recording API implementation in Safari on iOS will produce a fragmented MP4 (fMP4).</p>
+<table id="codecTable">
+	<thead>
+		<tr>
+			<th>Browser</th>
+			<th>Version</th>
+			<th>Container</th>
+			<th>Video codecs</th>
+			<th>Audio codecs</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="browser" rowspan="6">Chrome</td>
+			<td class="version">47+</td>
+			<td>WebM</td>
+			<td>VP8</td>
+			<td>—</td>
+		</tr>
+		<tr>
+			<td class="version">49+</td>
+			<td>WebM</td>
+			<td>VP8, VP9</td>
+			<td>Opus @ 48kHz</td>
+		</tr>
+		<tr>
+			<td class="version">52+</td>
+			<td>WebM</td>
+			<td>VP8, VP9, H.264</td>
+			<td>Opus @ 48kHz</td>
+		</tr>
+		<tr>
+			<td class="version">64+</td>
+			<td>WebM</td>
+			<td>VP8, VP9, H.264</td>
+			<td>Opus, PCM @ 48kHz</td>
+		</tr>
+		<tr>
+			<td class="version">126+</td>
+			<td>WebM, MP4<sup>*</sup></td>
+			<td>VP8, VP9, H.264, AV1<sup>1</sup></td>
+			<td>Opus, PCM @ 48kHz; AAC LC (MP4 only)</td>
+		</tr>
+		<tr>
+			<td class="version">136+</td>
+			<td>WebM, MP4<sup>*</sup></td>
+			<td>VP8, VP9, H.264, AV1<sup>1</sup>, HEVC<sup>2</sup></td>
+			<td>Opus, PCM @ 48kHz; AAC LC (MP4 only)</td>
+		</tr>
+		<tr>
+			<td class="browser">Firefox</td>
+			<td class="version">30+</td>
+			<td>WebM</td>
+			<td>VP8</td>
+			<td>Vorbis/Opus @ 44.1kHz</td>
+		</tr>
+		<tr>
+			<td class="browser" rowspan="2">Safari macOS</td>
+			<td class="version">14.0.2+</td>
+			<td>MP4<sup>*</sup></td>
+			<td>H.264</td>
+			<td>Stereo AAC @ 48kHz</td>
+		</tr>
+		<tr>
+			<td class="version">18.4+</td>
+			<td>MP4<sup>*</sup>, WebM</td>
+			<td>H.264, VP8, VP9, HEVC, AV1<sup>3</sup></td>
+			<td>Stereo AAC, Opus @ 48kHz</td>
+		</tr>
+		<tr>
+			<td class="browser" rowspan="2">Safari iOS</td>
+			<td class="version">14.3+</td>
+			<td>MP4<sup>*</sup></td>
+			<td>H.264</td>
+			<td>Stereo AAC @ 44.1/48kHz</td>
+		</tr>
+		<tr>
+			<td class="version">18.4+</td>
+			<td>MP4<sup>*</sup>, WebM</td>
+			<td>H.264, VP8, VP9, HEVC, AV1<sup>3</sup></td>
+			<td>Stereo AAC, Opus @ 44.1/48kHz</td>
+		</tr>
+	</tbody>
+</table>
+<p class="footnotes">
+	<sup>*</sup> Produces a fragmented MP4 (fMP4).<br>
+	<sup>1</sup> <i>Chrome on macOS always uses software AV1 encoding.</i> <a href="https://issues.chromium.org/issues/404291878#comment15" target="_blank" rel="noopener noreferrer">(Source)</a><br>
+	<sup>2</sup> <i>HEVC encoding is only supported if the user's device and OS provide the necessary capabilities.</i> <a href="https://developer.chrome.com/release-notes/136#h26x_codec_support_updates_for_mediarecorder" target="_blank" rel="noopener noreferrer">(Source)</a><br>
+	<sup>3</sup> <i>AV1 video tracks are supported on devices with AV1 hardware support.</i> <a href="https://webkit.org/blog/16574/webkit-features-in-safari-18-4/" target="_blank" rel="noopener noreferrer">(Source)</a>
+</p>
 
 <h2>Links:</h2>
 <ul>

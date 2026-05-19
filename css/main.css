@@ -133,7 +133,42 @@ button:disabled {
 button:first-child {
   margin-left: 0;
 }
-video{
-  width: 1280px;
-  height: 720px;
+
+#codecTable {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 0.9em;
+}
+
+#codecTable th,
+#codecTable td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+#codecTable th {
+  background: #005A9C;
+  color: #fff;
+  white-space: nowrap;
+}
+
+#codecTable td.browser {
+  font-weight: bold;
+  background: #eef3f8;
+  white-space: nowrap;
+}
+
+#codecTable td.version {
+  white-space: nowrap;
+  color: #005A9C;
+  font-weight: bold;
+}
+
+p.footnotes {
+  font-size: 0.85em;
+  color: #555;
+  line-height: 1.9;
 }
