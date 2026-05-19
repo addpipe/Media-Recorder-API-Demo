@@ -143,6 +143,7 @@ function onBtnRecordClicked (){
 	}else {
 		/* use the stream */
 		log('Start recording...');
+		let mime;
 		if (typeof MediaRecorder.isTypeSupported == 'function'){
 			/*
 				MediaRecorder.isTypeSupported is a function announced in https://developers.google.com/web/updates/2016/01/mediarecorder and later introduced in the MediaRecorder API spec http://www.w3.org/TR/mediastream-recording/
@@ -285,7 +286,7 @@ function onBtnRecordClicked (){
 			}
 
 			// Check in priority order
-			let mime = getMime();
+			mime = getMime();
 
 			if (!mime) {
 				log("No supported MediaRecorder formats found.");
