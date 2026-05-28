@@ -9,14 +9,25 @@ Works on:
 * Safari on iOS 14.3+
 
 Containers & codecs:
-* Safari on iOS 14.3+ : mp4, H264, Stereo AAC @ 44.1kHz or 48kHz
-* Safari on macOS 18.4+ : mp4/webm, H264/HEVC/AV1, Stereo AAC @ 48kHz
-* Safari on macOS 14.0.2+ : mp4, H264, Stereo AAC @ 48kHz
-* Chrome 136+ : webm/mp4, VP8/VP9/H264/AV1/HEVC, Opus @ 48kHz
-* Chrome 126+ : webm/mp4, VP8/VP9/H264/AV1, Opus @ 48kHz
-* Chrome 52+ : webm, VP8/VP9/H.264, Opus @ 48kHz
-* Chrome 49+ : webm, VP8/VP9, Opus @ 48kHz
-* Firefox 30+: webm,VP8, Vorbis/Opus @ 44.1 kHz
+
+| Browser | Version | Container | Video Codecs | Audio Codecs |
+|---|---|---|---|---|
+| Chrome | 47+ | WebM | VP8 | — |
+| Chrome | 49+ | WebM | VP8, VP9 | Opus @ 48kHz |
+| Chrome | 52+ | WebM | VP8, VP9, H.264 | Opus @ 48kHz |
+| Chrome | 64+ | WebM | VP8, VP9, H.264 | Opus, PCM @ 48kHz |
+| Chrome | 126+ | WebM, MP4\* | VP8, VP9, H.264, AV1¹ | Opus, PCM @ 48kHz; AAC LC (MP4 only) |
+| Chrome | 136+ | WebM, MP4\* | VP8, VP9, H.264, AV1¹, HEVC² | Opus, PCM @ 48kHz; AAC LC (MP4 only) |
+| Firefox | 30+ | WebM | VP8 | Vorbis/Opus @ 44.1kHz |
+| Safari macOS | 14.0.2+ | MP4\* | H.264 | AAC @ 48kHz |
+| Safari macOS | 18.4+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | AAC, Opus @ 48kHz |
+| Safari iOS | 14.3+ | MP4\* | H.264 | AAC @ 44.1/48kHz |
+| Safari iOS | 18.4+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | AAC, Opus @ 44.1/48kHz |
+
+\* Produces a fragmented MP4 (fMP4).  
+¹ Chrome on macOS always uses software AV1 encoding.  
+² HEVC encoding is only supported if the user's device and OS provide the necessary capabilities.  
+³ AV1 video tracks are supported on devices with AV1 hardware support.
 
 Issues:
 * Pause does not stop audio recording on Chrome 49,50
