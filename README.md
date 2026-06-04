@@ -21,8 +21,10 @@ Containers & codecs:
 | Firefox | 30+ | WebM | VP8 | Vorbis/Opus @ 44.1kHz |
 | Safari macOS | 14.0.2+ | MP4\* | H.264 | AAC @ 48kHz |
 | Safari macOS | 18.4+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | AAC, Opus @ 48kHz |
+| Safari macOS | 26+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | ALAC, PCM, AAC, Opus @ 44.1/48kHz |
 | Safari iOS | 14.3+ | MP4\* | H.264 | AAC @ 44.1/48kHz |
 | Safari iOS | 18.4+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | AAC, Opus @ 44.1/48kHz |
+| Safari iOS | 26+ | MP4\*, WebM | H.264, VP8, VP9, HEVC, AV1³ | ALAC, PCM, AAC, Opus @ 44.1/48kHz |
 
 \* Produces a fragmented MP4 (fMP4).  
 ¹ Chrome on macOS always uses software AV1 encoding.  
